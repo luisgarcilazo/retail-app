@@ -41,6 +41,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/users/dev").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users/client").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users/manager").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/users/login").permitAll()
         );
         // use HTTP Basic authentication
         http.httpBasic(Customizer.withDefaults());

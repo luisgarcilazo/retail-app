@@ -3,6 +3,7 @@ package com.example.retailapp.controller;
 import com.example.retailapp.entity.User;
 import com.example.retailapp.service.UserInfoService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api")
 public class UserDetailsController {
@@ -56,7 +58,20 @@ public class UserDetailsController {
 
         return dbUser;
     }
-
+    // POST /users/login for checking if the user details are correct (user for login in front-end)
+    @PostMapping("/users/login")
+    public User checkUser(@RequestBody User user) {
+        log.info("Trying to log in as username: " + user.getUsername());
+        User dbUser = userInfoService.findByUsername(user.getUsername());
+        if (dbUser.getUsername() == null) {
+            return new User();
+        }
+        if (dbUser.getUsername().equals(user.getUsername()) && passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
+            return dbUser;
+        } else {
+            return new User(); //returns new user with all empty fields
+        }
+    }
     @DeleteMapping("/users/{username}")
     public List<User> deleteUser(@PathVariable String username){
         try {
