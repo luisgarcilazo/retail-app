@@ -62,15 +62,25 @@ public class UserDetailsController {
     @PostMapping("/users/login")
     public User checkUser(@RequestBody User user) {
         log.info("Trying to log in as username: " + user.getUsername());
-        User dbUser = userInfoService.findByUsername(user.getUsername());
-        if (dbUser.getUsername() == null) {
-            return new User();
-        }
-        if (dbUser.getUsername().equals(user.getUsername()) && passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
-            return dbUser;
-        } else {
+        try {
+            User dbUser = userInfoService.findByUsername(user.getUsername());
+            if (dbUser.getUsername() == null) {
+                log.error("Logging in failed for username: " + user.getUsername());
+                log.error("Reason: Incorrect Password");
+                return new User();
+            }
+            if (dbUser.getUsername().equals(user.getUsername()) && passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
+                return dbUser;
+            } else {
+                return new User(); //returns new user with all empty fields
+            }
+        } catch (RuntimeException e){
+            log.error("Logging in failed for username: " + user.getUsername());
+            log.error("Reason: Username does not exist");
             return new User(); //returns new user with all empty fields
         }
+
+
     }
     @DeleteMapping("/users/{username}")
     public List<User> deleteUser(@PathVariable String username){
@@ -79,7 +89,7 @@ public class UserDetailsController {
             this.userInfoService.deleteUserByUsername(username);
             return this.userInfoService.findAll();
         } catch (RuntimeException e){
-            System.out.println("Delete failed for username: " + username);
+            log.error("Delete failed for username: " + username);
             return new ArrayList<>();
         }
     }

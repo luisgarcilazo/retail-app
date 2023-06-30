@@ -1,7 +1,16 @@
 <div class="d-flex flex-column" style="background-color: grey;">
     <app-home-nav></app-home-nav>
-    <section class="vh-100">
-        <p>Store front Works!</p>
+    <section class="">
+        <div class="container-fluid p-5 min-vh-100">
+            <ul>
+                <li *ngFor="let category of categories">
+                    <div class="example-ripple-container mat-elevation-z4"
+                        matRipple (click)="goToCategory(category)">
+                        {{category.name}}
+                    </div>
+                </li>
+            </ul>
+        </div>
     </section>
     <app-footer></app-footer>
 </div>

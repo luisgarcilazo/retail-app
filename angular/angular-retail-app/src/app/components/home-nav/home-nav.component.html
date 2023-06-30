@@ -22,19 +22,28 @@
                         <i class="fa-solid fa-store"></i>
                     </a>
                 </li>
+                <li *ngIf="isManager()"class="nav-item active">
+                    <a routerLink="/add-product" class="nav-link">
+                        Add a product
+                        <i class="fa-solid fa-apple-whole"></i>
+                    </a>
+                </li>
             </ul>
             <ul class="nav navbar-nav ms-auto w-100 justify-content-end">
-                <li class="nav-item active">
+                <li *ngIf="!isAuthenticated()" class="nav-item active">
                     <a routerLink="/login" class="nav-link">
                         Login
                         <i class="fa-solid fa-lock"></i>
                     </a>
                 </li>
-                <li class="nav-item active">
+                <li *ngIf="!isAuthenticated()" class="nav-item active">
                     <a routerLink="/create-account" class="nav-link">
                         Create Account
                         <i class="fa-solid fa-user"></i>
                     </a>
+                </li>
+                <li *ngIf="isAuthenticated()" class="nav-item active">
+                    <button mat-raised-button color="primary" (click)="logout()">Log Out</button>
                 </li>
                 <li class="nav-item">
                     <a routerLink="/cart" class="nav-link">

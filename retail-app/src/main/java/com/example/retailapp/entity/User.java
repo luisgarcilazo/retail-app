@@ -5,6 +5,9 @@ import lombok.*;
 
 import java.util.Collection;
 
+//help at setting user sql database from
+//https://www.udemy.com/course/spring-hibernate-tutorial
+//highly recommend!
 @Entity
 @Table(name="user")
 @NoArgsConstructor

@@ -20,6 +20,19 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
+import { MatCard, MatCardModule } from '@angular/material/card';
+import { MatRippleModule } from '@angular/material/core';
+
+import { AddProductComponent } from './components/add-product/add-product.component';
+import { FruitsComponent } from './components/categories/fruits/fruits.component';
+import { VegetablesComponent } from './components/categories/vegetables/vegetables.component';
+import { FoodanddrinksComponent } from './components/categories/foodanddrinks/foodanddrinks.component';
+import { ElectronicsComponent } from './components/categories/electronics/electronics.component';
+import { ClothesComponent } from './components/categories/clothes/clothes.component';
+import { ToysComponent } from './components/categories/toys/toys.component';
+import { HealthComponent } from './components/categories/health/health.component';
+import { DisplayAllComponent } from './components/categories/display-all/display-all.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +43,16 @@ import {MatIconModule} from '@angular/material/icon';
     HomeNavComponent,
     LicensingComponent,
     CartComponent,
-    StoreFrontComponent
+    StoreFrontComponent,
+    AddProductComponent,
+    FruitsComponent,
+    VegetablesComponent,
+    FoodanddrinksComponent,
+    ElectronicsComponent,
+    ClothesComponent,
+    ToysComponent,
+    HealthComponent,
+    DisplayAllComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +65,9 @@ import {MatIconModule} from '@angular/material/icon';
     MatSelectModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule
+    MatIconModule,
+    MatCardModule,
+    MatRippleModule
   ],
   providers: [],
   bootstrap: [AppComponent]

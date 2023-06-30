@@ -9,7 +9,7 @@ import { Role } from '../entities/Role';
   providedIn: 'root'
 })
 export class AccDetailsService {
-
+  private usersApi = 'http://localhost:8081/api/users'
   private clientApi = 'http://localhost:8081/api/users/client'
   private devApi = 'http://localhost:8081/api/users/dev';
   private managerApi = 'http://localhost:8081/api/users/manager';
@@ -38,5 +38,12 @@ export class AccDetailsService {
       'Content-Type': 'application/json',
     })
     return this.http.post<User>(this.managerApi,user, this.httpOptions);
+  }
+  loginCheck(user: User): Observable<User> {
+    this.httpOptions.headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+    const url = `${this.usersApi}/login`;
+    return this.http.post<User>(url,user, this.httpOptions);
   }
 }

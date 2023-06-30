@@ -1,0 +1,28 @@
+.example-card {
+    width: 450px;
+    padding-top: 15px;
+}
+
+li{
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+}
+
+.title {
+    color: #E91E63;
+    font-size: 35px;
+}
+
+.cart-icon{
+    color:#E91E63;
+
+}
+.cart-icon:hover {
+    cursor: pointer;
+}
+.card-content {
+    margin-top:25px;
+    text-align:right;
+    color: white;
+}

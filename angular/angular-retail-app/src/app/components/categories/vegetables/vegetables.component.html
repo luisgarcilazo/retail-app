@@ -1,0 +1,28 @@
+<div class="d-flex flex-column" style="background-color: grey;">
+    <app-home-nav></app-home-nav>
+    <section class="">
+        <div class="container-fluid p-5 min-vh-100">
+            <li>
+                <ul *ngFor="let product of products">
+
+                    <!-- help from card with multiple sections https://material.angular.io/components/card/examples -->
+                    <mat-card class="example-card">
+                        <mat-card-header>
+                          <mat-card-title class="title">{{product.name}}</mat-card-title>
+                          <mat-card-subtitle style="margin-top:10px">{{product.category}}</mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-content class="card-content">
+                            <h1>{{priceToCost(product)}}</h1>
+                            <h3>{{product.stock}} currently in stock</h3>
+                        </mat-card-content>
+                        <mat-card-actions style="margin-left: 300px; margin-top: 25px;">
+                          <button mat-button (click)="addToCart(product)">Add to cart </button>
+                          <i class="fa-sharp fa-solid fa-cart-plus fa-2x cart-icon" (click)="addToCart(product)"></i>
+                        </mat-card-actions>
+                      </mat-card>
+                </ul>
+            </li>>
+        </div>
+    </section>
+    <app-footer></app-footer>
+</div>

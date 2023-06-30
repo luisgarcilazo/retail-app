@@ -20,6 +20,7 @@ export class CreateAccountComponent {
   password!: string;
   confirmPassword!: string;
   userCreated!: User;
+  hide: boolean = true;
 
   constructor(private router: Router,
               private accDetailsService: AccDetailsService,
@@ -30,6 +31,10 @@ export class CreateAccountComponent {
   }
 
   createAccount(){
+    if(this.username == null || this.password == null || this.confirmPassword == null){
+      return;
+    }
+    this.hide= true;
     const newClient : User = {
       username: this.username,
       password: this.password,
@@ -41,14 +46,14 @@ export class CreateAccountComponent {
     dialogRef.afterClosed().subscribe(result => {
       dialogResult = result;
       console.log(dialogResult);
-      if(dialogResult){
-        console.log(this.username);
+      if(dialogResult == true){
+        this.accDetailsService.addClient(newClient).subscribe((user: User) => {
+          this.userCreated = user;
+          const dialogRef2 = this.dialog.open(CreateSuccessDialog);
+        })
       }
     })
     
-    // this.accDetailsService.addClient(newClient).subscribe((user: User) => {
-    //   this.userCreated = user;
-    // })
   }
 }
 
@@ -59,3 +64,11 @@ export class CreateAccountComponent {
   imports: [MatDialogModule, MatButtonModule],
 })
 export class CreateAccDialog {}
+
+@Component({
+  selector: 'create-success-dialog',
+  templateUrl: 'create-success-dialog.html',
+  standalone: true,
+  imports: [MatDialogModule, MatButtonModule],
+})
+export class CreateSuccessDialog {}
