@@ -1,12 +1,49 @@
 .items{
-    background-color: red;
+    background-color: rgb(44, 44, 44);
+    color: white;
+    padding: 25px;
 }
 
 
 .order{
-    background-color: blue;
+    background-color: rgb(44, 44, 44);
+    color: white;
+    padding: 25px;
 }
 
 .cart-container {
     padding: 50px;
+}
+.item-container {
+    padding: 50px;
+    font-family: 'consolas';
+    font-size: 25px;
+}
+.cost-container {
+    padding: 30px;
+    font-family: 'consolas';
+    font-size: 20px;
+}
+.item-x{
+    margin-top: 5px;
+}
+.item-x:hover {
+    cursor: pointer;
+}
+.checkout {
+    align-self: center;
+}
+
+.example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+}
+  
+.example-full-width {
+    width: 100%;
+}
+
+td {
+    padding-right: 8px;
 }

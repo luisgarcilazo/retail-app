@@ -33,8 +33,16 @@ export class ClothesComponent implements OnInit {
       cart.push(product);
       localStorage.setItem('cart',JSON.stringify(cartStr));
     } else {
-      let cart = JSON.parse(localStorage.getItem('cart') as string);
-      cart.push(product);
+      let cart: Product[] = JSON.parse(localStorage.getItem('cart') as string);
+      let exists: boolean = false;
+      cart.forEach((p) => {
+        if(p.id == product.id){
+          exists = true;
+        }
+      })
+      if(exists == false){
+        cart.push(product);
+      }
       localStorage.setItem('cart',JSON.stringify(cart));
       this.cartService.calculateCart();
     }

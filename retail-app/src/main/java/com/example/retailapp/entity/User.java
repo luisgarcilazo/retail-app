@@ -33,6 +33,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
 
+
     //extra constructor without roles
     public User(String username, String password, boolean enabled){
         this.username = username;
