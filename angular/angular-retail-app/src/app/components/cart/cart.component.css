@@ -11,6 +11,11 @@
     padding: 25px;
 }
 
+.checkout {
+    background-color: rgb(44, 44, 44);
+    color: white;
+    padding: 25px;
+}
 .cart-container {
     padding: 50px;
 }
@@ -35,8 +40,8 @@
 }
 
 .example-form {
-    min-width: 150px;
-    max-width: 500px;
+    min-width: 400px;
+    max-width: 700px;
     width: 100%;
 }
   

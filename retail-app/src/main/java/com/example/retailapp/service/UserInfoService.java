@@ -1,5 +1,6 @@
 package com.example.retailapp.service;
 
+import com.example.retailapp.entity.Order;
 import com.example.retailapp.entity.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -18,4 +19,6 @@ public interface UserInfoService extends UserDetailsService {
     User saveClient(User user);
 
     void deleteUserByUsername(String username);
+
+    User addOrderToUser(User user, Order order);
 }

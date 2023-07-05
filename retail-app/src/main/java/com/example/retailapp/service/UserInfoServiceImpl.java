@@ -2,6 +2,7 @@ package com.example.retailapp.service;
 
 import com.example.retailapp.DAO.RoleDAO;
 import com.example.retailapp.DAO.UserDAO;
+import com.example.retailapp.entity.Order;
 import com.example.retailapp.entity.User;
 import com.example.retailapp.entity.Role;
 import lombok.extern.slf4j.Slf4j;
@@ -110,6 +111,16 @@ public class UserInfoServiceImpl implements UserInfoService{
     public void deleteUserByUsername(String username){
         log.info("Deleting a user for username: " + username);
         this.userDAO.deleteById(username);
+    }
+
+    @Override
+    public User addOrderToUser(User user,Order order){
+        log.info("Adding an order to user: " + user.getUsername());
+        log.info("Adding order: " + order.toString());
+        Collection<Order> orders = user.getOrders();
+        orders.add(order);
+        user.setOrders(orders);
+        return this.userDAO.save(user);
     }
     //code was gotten from tutorials in https://www.udemy.com/course/spring-hibernate-tutorial
     @Override

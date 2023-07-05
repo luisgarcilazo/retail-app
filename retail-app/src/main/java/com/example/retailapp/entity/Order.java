@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.Collection;
 
 @Entity
-@Table(name="order")
+@Table(name="user_orders")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -41,10 +41,14 @@ public class Order {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "totalcost")
+    private double totalcost;
+
     @Column(name = "filename")
     private String filename;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "order_product_orders",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "product_order_id"))

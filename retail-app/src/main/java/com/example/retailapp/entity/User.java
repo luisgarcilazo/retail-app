@@ -34,6 +34,12 @@ public class User {
     private Collection<Role> roles;
 
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_users_orders",
+              joinColumns = @JoinColumn(name = "username"),
+              inverseJoinColumns = @JoinColumn(name = "order_id"))
+    private Collection<Order> orders;
+
     //extra constructor without roles
     public User(String username, String password, boolean enabled){
         this.username = username;

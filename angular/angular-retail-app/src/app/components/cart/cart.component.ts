@@ -8,6 +8,9 @@ import { AuthService } from 'src/app/services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { Order } from 'src/app/entities/Order';
+import { ProductOrder } from 'src/app/entities/ProductOrder';
+import { OrderService } from 'src/app/services/order.service';
 
 @Component({
   selector: 'app-cart',
@@ -23,7 +26,8 @@ export class CartComponent implements OnInit {
   promoCode!: string;
 
   displayCheckout!: boolean;
-  name!: string;
+
+  firstname!: string;
   lastname!: string;
   address!: string;
   city!: string;
@@ -33,6 +37,7 @@ export class CartComponent implements OnInit {
   constructor(private router: Router,
               private cartService: CartService,
               private authService: AuthService,
+              private orderService: OrderService,
               private dialog: MatDialog){}
   
   ngOnInit(){
@@ -41,15 +46,18 @@ export class CartComponent implements OnInit {
   }
 
   reloadCartItems(): boolean{
-    this.displayCheckout = false;
+    if(this.authService.isAuthenticated()){
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('auth');
+    }
     this.cartService.calculateCart();
     let cartStr = localStorage.getItem('cart');
     if(cartStr == null){
-      return false;
       this.costNoTax = 0;
       this.tax = 0;
       this.shipping = 0;
       this.totalCost = 0;
+      return false;
     } else {
       this.cartItems= JSON.parse(localStorage.getItem('cart') as string);
       this.costNoTax = this.cartService.getCostWithoutTax();
@@ -77,7 +85,11 @@ export class CartComponent implements OnInit {
           }
         })
         this.cartItems.splice(index, 1);
-        localStorage.setItem('cart',JSON.stringify(this.cartItems));
+        if(this.cartItems.length == 0){
+          localStorage.removeItem('cart');
+        } else {
+          localStorage.setItem('cart',JSON.stringify(this.cartItems));
+        }
       }
     })
     
@@ -108,6 +120,53 @@ export class CartComponent implements OnInit {
       this.displayCheckout = true;
     }
   }
+
+  canCheckout() {
+    return this.displayCheckout;
+  }
+
+  submitOrder(){
+    if(this.firstname == null || this.lastname == null || this.address == null || this.city == null || this.state == null || this.zipcode == null){
+      console.log("hello");
+      return;
+    }
+    const username: string = localStorage.getItem('currentUser') as string;
+    const products: ProductOrder[] = [];
+    this.cartItems.forEach((product: Product) => {
+      let productToAdd: ProductOrder = {
+        product_id: product.id as number,
+        amount: 1
+      };
+      products.push(productToAdd);
+    })
+    let orderToSubmit: Order = {
+      firstname: this.firstname,
+      lastname: this.lastname,
+      address: this.address,
+      city: this.city,
+      state: this.state,
+      zipcode: this.zipcode,
+      status: "placed",
+      totalcost: this.totalCost,
+      filename: "empty",
+      productOrders: products
+    }
+    const dialogRef1 = this.dialog.open(OrderPlaceDialog)
+    dialogRef1.afterClosed().subscribe((result) => {
+      if(result == true){
+        this.orderService.postOrder(username,orderToSubmit).subscribe((user) => {
+          console.log(user);
+          const dialogRef2 = this.dialog.open(OrderSuccessDialog);
+          this.cartService.clearCart();
+          this.reloadCartItems();
+          let username = localStorage.getItem("currentUser") as string;
+          this.orderService.reloadOrdersFromUser(username);
+        })
+      } else {
+        return;
+      }
+    })
+  }
 }
 
 @Component({
@@ -126,5 +185,22 @@ export class DeleteItemDialog {}
   imports: [MatDialogModule, MatButtonModule],
 })
 export class NonAuthDialog {}
+
+
+@Component({
+  selector: 'order-place-dialog',
+  templateUrl: 'order-place-dialog.html',
+  standalone: true,
+  imports: [MatDialogModule, MatButtonModule],
+})
+export class OrderPlaceDialog {}
+
+@Component({
+  selector: 'order-success-dialog',
+  templateUrl: 'order-success-dialog.html',
+  standalone: true,
+  imports: [MatDialogModule, MatButtonModule],
+})
+export class OrderSuccessDialog {}
 
 

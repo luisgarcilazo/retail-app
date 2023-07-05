@@ -28,6 +28,7 @@
                         <i class="fa-solid fa-apple-whole"></i>
                     </a>
                 </li>
+
             </ul>
             <ul class="nav navbar-nav ms-auto w-100 justify-content-end">
                 <li *ngIf="!isAuthenticated()" class="nav-item active">
@@ -42,8 +43,15 @@
                         <i class="fa-solid fa-user"></i>
                     </a>
                 </li>
+
                 <li *ngIf="isAuthenticated()" class="nav-item active">
                     <button mat-raised-button color="primary" (click)="logout()">Log Out</button>
+                </li>
+                <li *ngIf="isClient()" class="nav-item active">
+                    <a routerLink="/orders" class="nav-link">
+                        Orders
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a routerLink="/cart" class="nav-link">

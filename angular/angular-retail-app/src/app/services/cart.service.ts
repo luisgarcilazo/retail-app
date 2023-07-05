@@ -11,6 +11,10 @@ export class CartService {
 
   constructor() { }
 
+  clearCart(): void {
+    localStorage.removeItem('cart');
+  }
+
   calculateCart(): void {
     let cartStr = localStorage.getItem('cart');
     if(cartStr == null){

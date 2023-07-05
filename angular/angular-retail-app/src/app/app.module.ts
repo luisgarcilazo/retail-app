@@ -32,6 +32,7 @@ import { ClothesComponent } from './components/categories/clothes/clothes.compon
 import { ToysComponent } from './components/categories/toys/toys.component';
 import { HealthComponent } from './components/categories/health/health.component';
 import { DisplayAllComponent } from './components/categories/display-all/display-all.component';
+import { OrdersComponent } from './components/orders/orders.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { DisplayAllComponent } from './components/categories/display-all/display
     ClothesComponent,
     ToysComponent,
     HealthComponent,
-    DisplayAllComponent
+    DisplayAllComponent,
+    OrdersComponent
   ],
   imports: [
     BrowserModule,

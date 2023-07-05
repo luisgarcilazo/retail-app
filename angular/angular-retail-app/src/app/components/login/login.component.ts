@@ -11,6 +11,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import { AuthService } from 'src/app/services/auth.service';
+import { OrderService } from 'src/app/services/order.service';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +26,8 @@ export class LoginComponent {
   constructor(private router: Router,
               public dialog: MatDialog,
               private accDetailsService: AccDetailsService,
-              private authService: AuthService){}
+              private authService: AuthService,
+              private orderService:OrderService){}
   
   goToCreateAccount(){
     this.router.navigate(['/create-account']);
@@ -37,7 +39,6 @@ export class LoginComponent {
     this.authService.deauthenticateDev();
     localStorage.removeItem('currentUser');
     localStorage.removeItem('authKey');
-    console.log(this.password);
     this.hide = false;
     let rawuser = {
       username: this.username,
@@ -56,12 +57,10 @@ export class LoginComponent {
         this.password = '';
         return;
       } else {
-
         localStorage.setItem('authKey', 'Basic ' + btoa(`${rawuser.username}:${rawuser.password}`));
         this.user.roles.forEach((role: Role) => {
           if(role.name === 'ROLE_DEVELOPER'){
             isDev = true;
-
           }
           if(role.name === 'ROLE_MANAGER'){
             isManager = true;
@@ -71,11 +70,14 @@ export class LoginComponent {
           this.authService.authenticateClient();
           this.authService.authenticateManager();
           this.authService.authenticateDev();
+          this.orderService.reloadOrdersFromUser(rawuser.username);
         } else if (isManager) {
           this.authService.authenticateClient();
           this.authService.authenticateManager();
+          this.orderService.reloadOrdersFromUser(rawuser.username);
         } else {
           this.authService.authenticateClient();
+          this.orderService.reloadOrdersFromUser(rawuser.username);
         }
         const dialogRefFail = this.dialog.open(LoginSuccessDialog);
         this.router.navigate(['store']);

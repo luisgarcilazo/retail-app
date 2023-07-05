@@ -1,5 +1,6 @@
 package com.example.retailapp.controller;
 
+import com.example.retailapp.entity.Order;
 import com.example.retailapp.entity.User;
 import com.example.retailapp.service.UserInfoService;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Slf4j
@@ -92,5 +94,30 @@ public class UserDetailsController {
             log.error("Delete failed for username: " + username);
             return new ArrayList<>();
         }
+    }
+
+    // PUT mapping for adding order to user
+    @PutMapping("/users/{username}/orders")
+    public User addOrderToUser(@RequestBody Order order, @PathVariable String username){
+        log.info("Adding an order to a user");
+        User dbUser = userInfoService.findByUsername(username);
+        if (dbUser.getUsername() == null) {
+            return new User();
+        }
+        return userInfoService.addOrderToUser(dbUser, order);
+    }
+
+    // GET mapping for getting orders from user
+    @GetMapping("/users/{username}/orders")
+    public Collection<Order> getOrdersFromUsername(@PathVariable String username){
+        log.info("Getting orders from username" + username);
+        try {
+            User dbUser = userInfoService.findByUsername(username);
+            return dbUser.getOrders();
+        } catch (RuntimeException e){
+            log.error("Getting orders failed for username: " + username);
+            return new ArrayList<>();
+        }
+
     }
 }

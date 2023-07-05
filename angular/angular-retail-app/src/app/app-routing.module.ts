@@ -17,6 +17,8 @@ import { HealthComponent } from './components/categories/health/health.component
 import { ToysComponent } from './components/categories/toys/toys.component';
 import { VegetablesComponent } from './components/categories/vegetables/vegetables.component';
 import { DisplayAllComponent } from './components/categories/display-all/display-all.component';
+import { OrdersComponent } from './components/orders/orders.component';
+import { ClientGuard } from './guard/client-guard';
 
 const routes: Routes = [
   {
@@ -66,6 +68,10 @@ const routes: Routes = [
   },
   {
     path: 'cart', component: CartComponent
+  },
+  {
+    path: 'orders', component: OrdersComponent,
+    canActivate: [ClientGuard]
   }
 ];
 
