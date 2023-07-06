@@ -28,7 +28,12 @@
                         <i class="fa-solid fa-apple-whole"></i>
                     </a>
                 </li>
-
+                <li *ngIf="isManager()" class="nav-item active">
+                    <a routerLink="/manage-orders" class="nav-link">
+                        View all created orders
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                    </a>
+                </li>
             </ul>
             <ul class="nav navbar-nav ms-auto w-100 justify-content-end">
                 <li *ngIf="!isAuthenticated()" class="nav-item active">
@@ -53,6 +58,7 @@
                         <i class="fa-solid fa-file-invoice-dollar"></i>
                     </a>
                 </li>
+                
                 <li class="nav-item">
                     <a routerLink="/cart" class="nav-link">
                         Go to Cart

@@ -1,0 +1,12 @@
+.order-container {
+    padding: 50px;
+    font-family: 'consolas';
+    font-size: 25px;
+    
+}
+
+.orders{
+    background-color: rgb(44, 44, 44);
+    color: white;
+    padding: 25px;
+}

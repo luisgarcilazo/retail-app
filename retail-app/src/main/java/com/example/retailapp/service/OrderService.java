@@ -9,4 +9,8 @@ public interface OrderService {
     List<Order> getAllOrders();
 
     Order save(Order order);
+
+    Order findById(Long id);
+
+    Order updateStatus(Order order, String status);
 }

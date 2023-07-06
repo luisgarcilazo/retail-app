@@ -100,11 +100,13 @@ public class UserDetailsController {
     @PutMapping("/users/{username}/orders")
     public User addOrderToUser(@RequestBody Order order, @PathVariable String username){
         log.info("Adding an order to a user");
-        User dbUser = userInfoService.findByUsername(username);
-        if (dbUser.getUsername() == null) {
+        try {
+            User dbUser = userInfoService.findByUsername(username);
+            return userInfoService.addOrderToUser(dbUser, order);
+        } catch (RuntimeException e){
+            log.error("Adding orders failed for username: " + username);
             return new User();
         }
-        return userInfoService.addOrderToUser(dbUser, order);
     }
 
     // GET mapping for getting orders from user

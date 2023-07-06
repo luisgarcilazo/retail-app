@@ -71,10 +71,12 @@ export class LoginComponent {
           this.authService.authenticateManager();
           this.authService.authenticateDev();
           this.orderService.reloadOrdersFromUser(rawuser.username);
+          this.orderService.reloadAllOrders();
         } else if (isManager) {
           this.authService.authenticateClient();
           this.authService.authenticateManager();
           this.orderService.reloadOrdersFromUser(rawuser.username);
+          this.orderService.reloadAllOrders();
         } else {
           this.authService.authenticateClient();
           this.orderService.reloadOrdersFromUser(rawuser.username);

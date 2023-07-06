@@ -46,7 +46,7 @@ export class CartComponent implements OnInit {
   }
 
   reloadCartItems(): boolean{
-    if(this.authService.isAuthenticated()){
+    if(!this.authService.isAuthenticated()){
       localStorage.removeItem('currentUser');
       localStorage.removeItem('auth');
     }
@@ -87,9 +87,11 @@ export class CartComponent implements OnInit {
         this.cartItems.splice(index, 1);
         if(this.cartItems.length == 0){
           localStorage.removeItem('cart');
+          this.displayCheckout = false;
         } else {
           localStorage.setItem('cart',JSON.stringify(this.cartItems));
         }
+        this.reloadCartItems();
       }
     })
     
@@ -117,6 +119,11 @@ export class CartComponent implements OnInit {
         this.router.navigate(['/login']);
       })
     } else {
+      if(this.totalCost <= 0){
+        this.displayCheckout = false;
+        const dialogRef = this.dialog.open(NoItemsDialog);
+        return;
+      }
       this.displayCheckout = true;
     }
   }
@@ -202,5 +209,13 @@ export class OrderPlaceDialog {}
   imports: [MatDialogModule, MatButtonModule],
 })
 export class OrderSuccessDialog {}
+
+@Component({
+  selector: 'no-items-dialog',
+  templateUrl: 'no-items-dialog.html',
+  standalone: true,
+  imports: [MatDialogModule, MatButtonModule],
+})
+export class NoItemsDialog {}
 
 

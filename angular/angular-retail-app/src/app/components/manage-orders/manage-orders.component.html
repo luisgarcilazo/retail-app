@@ -1,0 +1,82 @@
+<div class="d-flex flex-column" style="background-color: grey;">
+    <app-home-nav></app-home-nav>
+    <section class="min-vh-100">
+        <div class="container-fluid order-container">
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="d-flex flex-column left-col">
+                        <div class="d-flex flex-column orders">
+                            <div class="d-flex" style="justify-content: space-between;">
+                                <h1 style="font-size: 30px;">All Orders</h1>
+                                <button (click)="reloadOrdersButton()" mat-fab color="warn" aria-label="Reload orders">
+                                    <mat-icon>refresh</mat-icon>
+                                </button>
+                            </div>
+                            <hr>
+                            <p *ngIf="!reloadOrders()">No orders have been placed</p>
+                            <div *ngFor="let order of orders">
+                                <div class="container-fluid order-container">
+                                    <div class="row">
+                                        <div class="col-lg-7">
+                                            <p>Order #: {{order.id}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-7">
+                                            <p>{{order.firstname}} {{order.lastname}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-7">
+                                            <p>{{order.address}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-7">
+                                            <p>{{order.city}}, {{order.state}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-7">
+                                            <p>{{order.zipcode}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-7">
+                                            <p>Status: {{order.status}}</p>
+                                        </div>
+                                        <div class="col-lg-5" style="text-align: right;">
+                                            <p>Total cost: {{numberToCost(order.totalcost)}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row buttons">
+                                        <div class="col-sm-2">
+                                            <button mat-flat-button style="background-color: greenyellow; color:black;" (click)="setAsCompleted(order)">Mark as completed</button>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button mat-flat-button style="background-color: lightblue; color: black" (click)="setAsPending(order)">Mark as pending</button>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button mat-flat-button style="background-color: pink; color: black" (click)="setAsPlaced(order)">Reset to placed</button>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button mat-flat-button style="background-color: indianred; color: black" (click)="cancelOrder(order)">Cancel Order</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                        </div>
+                        
+                        </div>
+
+
+                    
+                
+                
+                </div>
+            </div>
+        </div>
+    </section>
+    <app-footer></app-footer>
+</div>

@@ -19,6 +19,7 @@ import { VegetablesComponent } from './components/categories/vegetables/vegetabl
 import { DisplayAllComponent } from './components/categories/display-all/display-all.component';
 import { OrdersComponent } from './components/orders/orders.component';
 import { ClientGuard } from './guard/client-guard';
+import { ManageOrdersComponent } from './components/manage-orders/manage-orders.component';
 
 const routes: Routes = [
   {
@@ -72,6 +73,10 @@ const routes: Routes = [
   {
     path: 'orders', component: OrdersComponent,
     canActivate: [ClientGuard]
+  },
+  {
+    path: 'manage-orders', component: ManageOrdersComponent,
+    canActivate: [ManagerGuard]
   }
 ];
 
