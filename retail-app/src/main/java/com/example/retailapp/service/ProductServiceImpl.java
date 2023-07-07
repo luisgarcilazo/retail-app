@@ -57,4 +57,22 @@ public class ProductServiceImpl implements ProductService{
         log.info("Deleting a product for id: " + id);
         this.productDAO.deleteById(id);
     }
+
+    @Override
+    public Product decreaseStock(Product product, int amount){
+        log.info("Decreasing stock about to be called");
+        if(product.getStock() < amount){
+            log.error("Cannot decrease stock to be less than current stock");
+            return new Product();
+        }
+        product.setStock(product.getStock()- amount);
+        return this.productDAO.save(product);
+    }
+
+    @Override
+    public Product increaseStock(Product product, int amount){
+        log.info("Increasing stock about to be called");
+        product.setStock(product.getStock() + amount);
+        return this.productDAO.save(product);
+    }
 }

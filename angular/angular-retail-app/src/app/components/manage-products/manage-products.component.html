@@ -1,0 +1,39 @@
+<div class="d-flex flex-column" style="background-color: grey;">
+    <app-home-nav></app-home-nav>
+    <section class="">
+        <div class="container-fluid p-5 min-vh-100">
+            <li>
+                <ul *ngFor="let product of products">
+
+                    <!-- help from card with multiple sections https://material.angular.io/components/card/examples -->
+                    <mat-card class="example-card">
+                        <mat-card-header>
+                          <mat-card-title class="title">{{product.name}}
+                            <button mat-mini-fab matTooltip="Primary" color="primary" aria-label="Edit product">
+                                <mat-icon>edit</mat-icon>
+                              </button>
+                          </mat-card-title>
+                          <mat-card-subtitle style="margin-top:10px">{{product.category}}</mat-card-subtitle>
+                          <mat-card-subtitle style="margin-top:10px">Id: {{product.id}}</mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-content class="card-content">
+                            <h1>{{priceToCost(product)}}</h1>
+                            <h3>{{product.stock}} currently in stock</h3>
+                            <div class="d-flex stock-buttons">
+                                <button mat-fab extended color="primary" (click)="addStock(product)">
+                                    <mat-icon>add</mat-icon>
+                                    Add stock
+                                </button>
+                                <button mat-fab extended color="primary" (click)="removeStock(product)">
+                                    <mat-icon>remove</mat-icon>
+                                    Remove stock
+                                </button>
+                            </div>
+                        </mat-card-content>
+                      </mat-card>
+                </ul>
+            </li>>
+        </div>
+    </section>
+    <app-footer></app-footer>
+</div>

@@ -50,6 +50,10 @@ export class ClothesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result != undefined){
         this.amount = result;
+        if(parseInt(result) > product.stock){
+          const dialogRef2 = this.dialog.open(NotEnoughStockDialog);
+          return;
+        }
         let cartStr = localStorage.getItem('cart');
         product.amount = this.amount;
         if(cartStr == null){
@@ -60,9 +64,16 @@ export class ClothesComponent implements OnInit {
         } else {
           let cart: Product[] = JSON.parse(localStorage.getItem('cart') as string);
           let exists: boolean = false;
+          let hasEnoughStock: boolean = true;
           cart.forEach((p) => {
             if(p.id == product.id){
-              p.amount = "" + (parseInt(p.amount as string) + parseInt(product.amount as string));
+              let amount = "" + (parseInt(p.amount as string) + parseInt(product.amount as string));
+              if(p.stock >= parseInt(amount)){
+                hasEnoughStock = true;
+                p.amount = amount;
+              } else {
+                hasEnoughStock = false;
+              }
               exists = true;
             }
           })
@@ -71,7 +82,12 @@ export class ClothesComponent implements OnInit {
           } 
           localStorage.setItem('cart',JSON.stringify(cart));
           this.cartService.calculateCart();
-          const dialogRef2 = this.dialog.open(ClothesSuccessAddCartDialog);
+          if(hasEnoughStock == true){
+            const dialogRef2 = this.dialog.open(ClothesSuccessAddCartDialog);
+          } else {
+            const dialogRef2 = this.dialog.open(NotEnoughStockDialog);
+          }
+          
         }
       }  else {
         console.log("undefined");
@@ -114,3 +130,11 @@ export class ClothesAddToCartDialog {
   imports: [MatDialogModule, MatButtonModule],
 })
 export class ClothesSuccessAddCartDialog {}
+
+@Component({
+  selector: 'clothes-not-enough-stock-dialog.',
+  templateUrl: 'not-enough-stock-dialog.html',
+  standalone: true,
+  imports: [MatDialogModule, MatButtonModule],
+})
+export class NotEnoughStockDialog {}

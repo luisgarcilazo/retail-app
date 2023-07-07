@@ -34,6 +34,7 @@ import { HealthComponent } from './components/categories/health/health.component
 import { DisplayAllComponent } from './components/categories/display-all/display-all.component';
 import { OrdersComponent } from './components/orders/orders.component';
 import { ManageOrdersComponent } from './components/manage-orders/manage-orders.component';
+import { ManageProductsComponent } from './components/manage-products/manage-products.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { ManageOrdersComponent } from './components/manage-orders/manage-orders.
     HealthComponent,
     DisplayAllComponent,
     OrdersComponent,
-    ManageOrdersComponent
+    ManageOrdersComponent,
+    ManageProductsComponent
   ],
   imports: [
     BrowserModule,

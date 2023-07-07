@@ -29,9 +29,15 @@
                     </a>
                 </li>
                 <li *ngIf="isManager()" class="nav-item active">
+                    <a routerLink="/manage-products" class="nav-link">
+                        Manage products
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                    </a>
+                </li>
+                <li *ngIf="isManager()" class="nav-item active">
                     <a routerLink="/manage-orders" class="nav-link">
                         View all created orders
-                        <i class="fa-solid fa-boxes-stacked"></i>
+                        <i class="fa-solid fa-clipboard"></i>
                     </a>
                 </li>
             </ul>

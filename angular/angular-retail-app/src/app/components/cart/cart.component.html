@@ -8,7 +8,26 @@
                         <div class="d-flex flex-column items">
                             <h1 style="font-size: 30px;">Cart Details</h1>
                             <hr>
-                            <p *ngIf="!reloadCartItems()">Cart is empty. Try adding some items from the store tab!</p>
+                            <div class="container-fluid item-container">
+                                <div class="row">
+                                    <div class="col-lg-1">
+                                        
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <h2>Item and amount</h2>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <h2>Stock</h2>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <h2>Cost per item</h2>
+                                    </div>
+                                    <div class="col-lg-2" style="text-align: right;">
+                                        <h2>Total cost</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <h1 style="text-align: center" *ngIf="!reloadCartItems()">Cart is empty. Try adding some items from the store tab!</h1>
                             <div *ngFor="let item of cartItems">
                                 <div class="container-fluid item-container">
                                     <div class="row">
@@ -16,16 +35,16 @@
                                             <i class="fa-solid fa-x item-x" (click)="deleteItemFromCart(item)" style="color: #ef0606;"></i>
                                         </div>
                                         <div class="col-lg-5">
-                                            <p>{{item.name}}</p>
+                                            <p>{{item.name}} x{{item.amount}}</p>
                                         </div>
                                         <div class="col-lg-2">
                                             <p>Stock: {{item.stock}}</p>
                                         </div>
                                         <div class="col-lg-2">
-                                            <p>dropdown place</p>
+                                            <p>{{priceToCost(item)}}</p>
                                         </div>
                                         <div class="col-lg-2" style="text-align: right;">
-                                            <p>{{priceToCost(item)}}</p>
+                                            <p>{{numberToCost(getTotalItemCost(item))}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -132,14 +151,52 @@
                                     </div>
                                 </div>
                             </div>
+                            <hr>
+                            <div *ngIf="promoIncluded">
+                                <div class="container-fluid cost-container">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            Discount:
+                                        </div>
+                                        <div class="col-lg-6" style="text-align: right;">
+                                            {{this.promoDiscount}}%
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container-fluid cost-container">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            Discounted amount:
+                                        </div>
+                                        <div class="col-lg-6" style="text-align: right;">
+                                            {{numberToCost(this.promoAmount)}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container-fluid cost-container">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            Discounted total:
+                                        </div>
+                                        <div class="col-lg-6" style="text-align: right;">
+                                            {{numberToCost(this.totalWithPromo)}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
                             <div class="col-lg-6" style="margin:25px;">
-                                <mat-form-field class="example-form-field">
-                                    <mat-label>Promo Code</mat-label>
-                                    <input matInput type="text" [(ngModel)]="promoCode">
-                                    <button *ngIf="promoCode" matSuffix mat-icon-button aria-label="Clear" (click)="promoCode=''">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
+                                <div class="d-flex gap-5">
+                                    <mat-form-field style="height: auto;">
+                                        <mat-label>Promo Code</mat-label>
+                                        <input matInput type="text" [(ngModel)]="promoCode">
+                                        <button *ngIf="promoCode" matSuffix mat-icon-button aria-label="Clear" (click)="promoCode=''">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
                                     </mat-form-field>
+                                    <button mat-raised-button style="background-color: lightpink; color: black; height:60px;" (click)="applyDiscount()">Apply</button>
+                                </div>
+
                             </div>
                             <div class="checkout">
                                 <button mat-fab extended color="primary" (click)="checkout()">

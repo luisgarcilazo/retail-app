@@ -29,7 +29,7 @@ export class CartService {
       this.shipping = 0;
       this.totalCost = 0;
       let cart: Product[] = JSON.parse(cartStr as string);
-      cart.forEach((product) => this.costNoTax += product.price);
+      cart.forEach((product) => this.costNoTax += this.getTotalItemCost(product));
       this.tax = this.costNoTax * 0.0825;
       this.shipping = 4.99
       this.totalCost = this.costNoTax + this.tax + this.shipping;
@@ -47,5 +47,10 @@ export class CartService {
   }
   getTotalCost(): number {
     return this.totalCost;
+  }
+
+  //helper for getting total from price and amount
+  getTotalItemCost(product: Product) : number {
+    return (product.price * parseInt(product.amount as string));
   }
 }

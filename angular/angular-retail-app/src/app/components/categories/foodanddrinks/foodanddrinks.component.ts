@@ -40,45 +40,61 @@ export class FoodanddrinksComponent implements OnInit {
     })
   }
   
-  //help from here https://stackoverflow.com/questions/3357553/how-do-i-store-an-array-in-localstorage
-  addToCart(product: Product): void{
+//help from here https://stackoverflow.com/questions/3357553/how-do-i-store-an-array-in-localstorage
+addToCart(product: Product): void{
 
-    const dialogRef = this.dialog.open(FoodandDrinksAddToCartDialog, {
-      data: {name: product.name, amount: this.amount},
-    });
+  const dialogRef = this.dialog.open(FoodandDrinksAddToCartDialog, {
+    data: {name: product.name, amount: this.amount},
+  });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result != undefined){
-        this.amount = result;
-        let cartStr = localStorage.getItem('cart');
-        product.amount = this.amount;
-        if(cartStr == null){
-          console.log("hello");
-          let cart: Product[] = [];
-          cart.push(product);
-          localStorage.setItem('cart',JSON.stringify(cart));
-        } else {
-          let cart: Product[] = JSON.parse(localStorage.getItem('cart') as string);
-          let exists: boolean = false;
-          cart.forEach((p) => {
-            if(p.id == product.id){
-              p.amount = "" + (parseInt(p.amount as string) + parseInt(product.amount as string));
-              exists = true;
-            }
-          })
-          if(exists == false){
-            cart.push(product);
-          } 
-          localStorage.setItem('cart',JSON.stringify(cart));
-          this.cartService.calculateCart();
-          const dialogRef2 = this.dialog.open(FoodandDrinksSuccessAddCartDialog);
-        }
-      }  else {
-        console.log("undefined");
+  dialogRef.afterClosed().subscribe(result => {
+    if (result != undefined){
+      this.amount = result;
+      if(parseInt(result) > product.stock){
+        const dialogRef2 = this.dialog.open(NotEnoughStockDialog);
+        return;
       }
-    })
+      let cartStr = localStorage.getItem('cart');
+      product.amount = this.amount;
+      if(cartStr == null){
+        console.log("hello");
+        let cart: Product[] = [];
+        cart.push(product);
+        localStorage.setItem('cart',JSON.stringify(cart));
+      } else {
+        let cart: Product[] = JSON.parse(localStorage.getItem('cart') as string);
+        let exists: boolean = false;
+        let hasEnoughStock: boolean = true;
+        cart.forEach((p) => {
+          if(p.id == product.id){
+            let amount = "" + (parseInt(p.amount as string) + parseInt(product.amount as string));
+            if(p.stock >= parseInt(amount)){
+              hasEnoughStock = true;
+              p.amount = amount;
+            } else {
+              hasEnoughStock = false;
+            }
+            exists = true;
+          }
+        })
+        if(exists == false){
+          cart.push(product);
+        } 
+        localStorage.setItem('cart',JSON.stringify(cart));
+        this.cartService.calculateCart();
+        if(hasEnoughStock == true){
+          const dialogRef2 = this.dialog.open(FoodandDrinksSuccessAddCartDialog);
+        } else {
+          const dialogRef2 = this.dialog.open(NotEnoughStockDialog);
+        }
+        
+      }
+    }  else {
+      console.log("undefined");
+    }
+  })
 
-  }
+}
 
   //help from here https://stackoverflow.com/questions/149055/how-to-format-numbers-as-currency-strings
   priceToCost(product: Product): string{
@@ -114,3 +130,11 @@ export class FoodandDrinksAddToCartDialog {
   imports: [MatDialogModule, MatButtonModule],
 })
 export class FoodandDrinksSuccessAddCartDialog {}
+
+@Component({
+  selector: 'fnd-not-enough-stock-dialog.',
+  templateUrl: 'not-enough-stock-dialog.html',
+  standalone: true,
+  imports: [MatDialogModule, MatButtonModule],
+})
+export class NotEnoughStockDialog {}

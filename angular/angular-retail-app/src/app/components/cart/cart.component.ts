@@ -11,6 +11,9 @@ import { MatInputModule } from '@angular/material/input';
 import { Order } from 'src/app/entities/Order';
 import { ProductOrder } from 'src/app/entities/ProductOrder';
 import { OrderService } from 'src/app/services/order.service';
+import { PROMOCODES } from './PromoCodes';
+import { PromoCode } from './PromoCode';
+import { ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-cart',
@@ -23,10 +26,15 @@ export class CartComponent implements OnInit {
   tax!: number;
   shipping!: number;
   totalCost!: number;
+
   promoCode!: string;
+  promoIncluded: boolean = false;
+  promoDiscount: number = 0;
+  promoAmount: number = 0;
+  totalWithPromo: number = 0;
 
   displayCheckout!: boolean;
-
+  promoCodes: PromoCode[] = PROMOCODES;
   firstname!: string;
   lastname!: string;
   address!: string;
@@ -38,6 +46,7 @@ export class CartComponent implements OnInit {
               private cartService: CartService,
               private authService: AuthService,
               private orderService: OrderService,
+              private productService: ProductService,
               private dialog: MatDialog){}
   
   ngOnInit(){
@@ -112,6 +121,21 @@ export class CartComponent implements OnInit {
     });
   }
 
+  getTotalItemCost(product: Product) : number {
+    return (product.price * parseInt(product.amount as string));
+  }
+
+  applyDiscount() {
+    this.promoCodes.forEach((promo) => {
+      if(this.promoCode == promo.code){
+        this.promoIncluded = true;
+        this.promoDiscount = promo.amount;
+        this.promoAmount = Math.round((this.costNoTax * (promo.amount / 100)) * 100) / 100;
+        this.totalWithPromo = this.totalCost - this.promoAmount;
+      }
+    });
+  }
+
   checkout(){
     if(!this.authService.isAuthenticated()){
       const dialogRef1 = this.dialog.open(NonAuthDialog);
@@ -128,11 +152,12 @@ export class CartComponent implements OnInit {
     }
   }
 
-  canCheckout() {
+  canCheckout(): boolean {
     return this.displayCheckout;
   }
 
-  submitOrder(){
+
+  async submitOrder(){
     if(this.firstname == null || this.lastname == null || this.address == null || this.city == null || this.state == null || this.zipcode == null){
       console.log("hello");
       return;
@@ -142,7 +167,7 @@ export class CartComponent implements OnInit {
     this.cartItems.forEach((product: Product) => {
       let productToAdd: ProductOrder = {
         product_id: product.id as number,
-        amount: 1
+        amount: product.amount as string
       };
       products.push(productToAdd);
     })
@@ -154,7 +179,7 @@ export class CartComponent implements OnInit {
       state: this.state,
       zipcode: this.zipcode,
       status: "placed",
-      totalcost: this.totalCost,
+      totalcost: this.promoIncluded ? this.totalWithPromo : this.totalCost,
       filename: "empty",
       productOrders: products
     }
@@ -162,12 +187,19 @@ export class CartComponent implements OnInit {
     dialogRef1.afterClosed().subscribe((result) => {
       if(result == true){
         this.orderService.postOrder(username,orderToSubmit).subscribe((user) => {
-          console.log(user);
           const dialogRef2 = this.dialog.open(OrderSuccessDialog);
-          this.cartService.clearCart();
-          this.reloadCartItems();
-          let username = localStorage.getItem("currentUser") as string;
-          this.orderService.reloadOrdersFromUser(username);
+          orderToSubmit.productOrders.forEach((productOrder) => {
+            this.productService.decreaseStock(productOrder.product_id as number, parseInt(productOrder.amount)).subscribe();
+          })   
+          dialogRef2.afterClosed().subscribe(() => {
+            this.cartService.clearCart();
+            this.reloadCartItems();
+            this.displayCheckout = false;
+            let username = localStorage.getItem("currentUser") as string;
+            this.orderService.reloadOrdersFromUser(username);
+            this.router.navigate(['/orders'])
+          })
+
         })
       } else {
         return;

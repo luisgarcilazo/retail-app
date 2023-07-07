@@ -14,4 +14,8 @@ public interface ProductService {
     Product findById(Long id);
 
     void deleteProductById(Long id);
+
+    Product decreaseStock(Product product, int amount);
+
+    Product increaseStock(Product product, int amount);
 }

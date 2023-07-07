@@ -46,6 +46,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/store/products").permitAll()
                         .requestMatchers(HttpMethod.POST, "/store/products").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/store/products/{id}").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/store/products/{id}/stock/decrease/{amount}").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/store/products/{id}/stock/increase/{amount}").permitAll()
                         //request matchers for orders
                         .requestMatchers(HttpMethod.GET, "/orders").permitAll()
                         .requestMatchers(HttpMethod.POST, "/orders").permitAll()

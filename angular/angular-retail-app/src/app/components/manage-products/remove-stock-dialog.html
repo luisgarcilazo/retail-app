@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Remove stock</h1>
+<div mat-dialog-content>
+  <p>How many of them would you like to remove from stock?<p>
+  <mat-form-field>
+    <mat-select name="data.amount" [(ngModel)] ="data.amount">
+      <mat-option *ngFor="let num of data.stockOptionLimit" value="{{num}}">{{num}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="data.amount" cdkFocusInitial>Ok</button>
+</div>

@@ -28,4 +28,21 @@ export class ProductService {
     })
     return this.http.get<Product[]>(this.productsApi,this.httpOptions);
   }
+
+  decreaseStock(id: number, amount: number): Observable<Product>{
+    this.httpOptions.headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+    const url = `${this.productsApi}/${id}/stock/decrease/${amount}`;
+    return this.http.put<Product>(url,this.httpOptions);
+  }
+
+  increaseStock(id: number, amount: number): Observable<Product>{
+    this.httpOptions.headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+    const url = `${this.productsApi}/${id}/stock/increase/${amount}`;
+    return this.http.put<Product>(url,this.httpOptions);
+  }
+  
 }
