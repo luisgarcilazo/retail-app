@@ -32,6 +32,10 @@ export class HomeNavComponent {
   isClient(): boolean {
     return this.authService.isAuthenticatedClient();
   }
+
+  isDev(): boolean {
+    return this.authService.isAuthenticatedDev();
+  }
   logout(){
     const dialogRef1 = this.dialog.open(ConfirmLogoutDialog);
     let dialogResult: boolean = false;

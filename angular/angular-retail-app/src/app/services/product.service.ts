@@ -44,5 +44,28 @@ export class ProductService {
     const url = `${this.productsApi}/${id}/stock/increase/${amount}`;
     return this.http.put<Product>(url,this.httpOptions);
   }
-  
+
+  changeName(id: number, name: string): Observable<Product>{
+    this.httpOptions.headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+    const url = `${this.productsApi}/${id}/name/${name}`;
+    return this.http.put<Product>(url,this.httpOptions);
+  }
+
+  changeCategory(id: number, category: string): Observable<Product>{
+    this.httpOptions.headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+    const url = `${this.productsApi}/${id}/category/${category}`;
+    return this.http.put<Product>(url,this.httpOptions);
+  }
+
+  changePrice(id: number, price: number): Observable<Product>{
+    this.httpOptions.headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+    const url = `${this.productsApi}/${id}/price/${price}`;
+    return this.http.put<Product>(url,this.httpOptions);
+  }
 }

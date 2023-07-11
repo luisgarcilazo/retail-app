@@ -42,6 +42,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Product findById(Long id) {
+        log.info("Inside find by id on service");
         Optional<Product> optionalProduct = this.productDAO.findById(id);
         Product product = null;
         if(optionalProduct.isPresent()){
@@ -71,8 +72,30 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Product increaseStock(Product product, int amount){
-        log.info("Increasing stock about to be called");
+        log.info("Increasing stock called");
         product.setStock(product.getStock() + amount);
         return this.productDAO.save(product);
     }
+
+    @Override
+    public Product updateName(Product product, String name) {
+        log.info("Update name called");
+        product.setName(name);
+        return this.productDAO.save(product);
+    }
+
+    @Override
+    public Product updatePrice(Product product, double price) {
+        log.info("Update price called");
+        product.setPrice(price);
+        return this.productDAO.save(product);
+    }
+
+    @Override
+    public Product updateCategory(Product product, String category) {
+        log.info("Update category called");
+        product.setCategory(category);
+        return this.productDAO.save(product);
+    }
+
 }

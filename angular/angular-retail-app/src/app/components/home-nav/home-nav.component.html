@@ -40,6 +40,12 @@
                         <i class="fa-solid fa-clipboard"></i>
                     </a>
                 </li>
+                <li *ngIf="isDev()" class="nav-item active">
+                    <a routerLink="/create-manager" class="nav-link">
+                        Create manager
+                        <i class="fa-solid fa-user-secret"></i>
+                    </a>
+                </li>
             </ul>
             <ul class="nav navbar-nav ms-auto w-100 justify-content-end">
                 <li *ngIf="!isAuthenticated()" class="nav-item active">

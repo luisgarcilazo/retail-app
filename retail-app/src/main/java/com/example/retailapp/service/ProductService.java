@@ -18,4 +18,10 @@ public interface ProductService {
     Product decreaseStock(Product product, int amount);
 
     Product increaseStock(Product product, int amount);
+
+    Product updateName(Product product, String name);
+
+    Product updatePrice(Product product, double price);
+
+    Product updateCategory(Product product, String category);
 }

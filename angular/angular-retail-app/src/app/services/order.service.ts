@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Order } from '../entities/Order';
 import { Observable } from 'rxjs';
 import { User } from '../entities/User';
+import { FileProperties } from '../entities/FileProperties';
 @Injectable({
   providedIn: 'root'
 })
@@ -66,5 +67,12 @@ export class OrderService {
     this.httpClient.put<Order>(url,this.httpOptions).subscribe();
   }
 
+  uploadFile(formData: FormData): Observable<FileProperties> {
+    this.httpOptions.headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+    const url = `${this.ordersApi}/files`;
+    return this.httpClient.post<FileProperties>(url, formData);
+  }
   
 }

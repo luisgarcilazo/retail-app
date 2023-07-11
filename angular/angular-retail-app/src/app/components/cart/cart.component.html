@@ -89,6 +89,21 @@
                                             <input name="zipcode" [(ngModel)]="zipcode" id="zipcode" matInput #postalCode maxlength="5" placeholder="Ex. 94105" value="">
                                         </mat-form-field></td>
                                         </tr></table>
+                                        <mat-checkbox class="example-margin" [(ngModel)]="addGift" name="addGift">Add gift message</mat-checkbox>
+                                        <!-- help from here https://blog.angular-university.io/angular-file-upload/ -->
+                                        <div *ngIf="addGift">
+                                            <input type="file" class="file-input"
+                                            (change)="onFileSelected($event)" #fileUpload>
+                                            <div class="file-upload">
+
+                                                {{fileName || "No file uploaded yet."}}
+                                             
+                                                 <button mat-mini-fab color="primary" class="upload-btn"
+                                                   (click)="fileUpload.click()">
+                                                     <mat-icon>attach_file</mat-icon>
+                                                 </button>
+                                             </div>
+                                        </div>
                                     </form>
                                     <div class="checkout">
                                         <button mat-fab extended color="primary" (click)="submitOrder()">

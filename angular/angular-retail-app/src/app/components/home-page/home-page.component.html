@@ -1,7 +1,47 @@
 <div class="d-flex flex-column" style="background-color: grey;">
     <app-home-nav></app-home-nav>
     <section class="vh-100">
-        <p>Cart Works!</p>
+                <!-- Header-->
+                <header class="bg-dark py-5">
+                    <div class="container px-5">
+                        <div class="row gx-5 justify-content-center">
+                            <div class="col-lg-6">
+                                <div class="text-center my-5" style="">
+                                    <h1 class="display-5 fw-bolder text-white mb-2">Retail Management App</h1>
+                                    <p class="lead text-white-50 mb-4">Create an account, access the store, and add products to cart to then checkout and create an order.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <!-- Features section-->
+                <section class="py-5 border-bottom" id="features" style="background-color: rgba(45, 46, 1, 0.13); height:500px;">
+                    <div class="container px-5 my-5">
+                        <div class="row gx-5" style="margin-top: 100px;">
+                            <div class="col-lg-4 mb-5 mb-lg-0" style="text-align: center;">
+                                <h2 class="h4 fw-bolder" style="color: white">Create an account</h2>
+                                <p style="color: white">Create an account to be able to place orders and keep track of all your orders and their status.</p>
+                                <div class="mt-4">
+                                    <button mat-raised-button color="primary">Create an Account</button>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-5 mb-lg-0" style="text-align: center;">
+                                <h2 class="h4 fw-bolder" style="color: white">Check the store and add items to cart</h2>
+                                <p style="color: white">An ample selection of items, divided into 6 different categories in the store page, with a display all tab to see all the items. Amazing prices for the average person! </p>
+                                <div class="mt-4">
+                                    <button mat-raised-button color="primary">Go to Store Page</button>
+                                </div>
+                            </div>
+                            <div class="col-lg-4" style="text-align: center;">
+                                <h2 class="h4 fw-bolder" style="color: white">Check out in the cart</h2>
+                                <p style="color: white">After you have added your items to cart and logged in, access the cart page to start checking out. You are able to add a promo code during check-out and apply it for a discount. </p>
+                                <div class="mt-4">
+                                    <button mat-raised-button color="primary">Go to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
     </section>
     <app-footer></app-footer>
 </div>

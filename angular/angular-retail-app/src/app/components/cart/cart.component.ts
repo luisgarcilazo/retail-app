@@ -14,6 +14,9 @@ import { OrderService } from 'src/app/services/order.service';
 import { PROMOCODES } from './PromoCodes';
 import { PromoCode } from './PromoCode';
 import { ProductService } from 'src/app/services/product.service';
+import { HttpResponse } from '@angular/common/http';
+import { FileProperties } from 'src/app/entities/FileProperties';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-cart',
@@ -41,6 +44,10 @@ export class CartComponent implements OnInit {
   city!: string;
   state!: string;
   zipcode!: number;
+
+  addGift: boolean = false;
+  fileName: string = '';
+  file!: File;
 
   constructor(private router: Router,
               private cartService: CartService,
@@ -162,6 +169,9 @@ export class CartComponent implements OnInit {
       console.log("hello");
       return;
     }
+    if(this.addGift == true && (this.fileName == null || this.file == null)){
+      return;
+    }
     const username: string = localStorage.getItem('currentUser') as string;
     const products: ProductOrder[] = [];
     this.cartItems.forEach((product: Product) => {
@@ -180,17 +190,33 @@ export class CartComponent implements OnInit {
       zipcode: this.zipcode,
       status: "placed",
       totalcost: this.promoIncluded ? this.totalWithPromo : this.totalCost,
-      filename: "empty",
+      filename: (this.addGift) ? this.fileName : "No gift was added",
+      filepath: '',
       productOrders: products
     }
     const dialogRef1 = this.dialog.open(OrderPlaceDialog)
     dialogRef1.afterClosed().subscribe((result) => {
       if(result == true){
+        if(this.addGift == true){
+          orderToSubmit.filename == this.fileName;
+          const formData = new FormData();
+          formData.append('file', this.file);
+          formData.append('user',localStorage.getItem('currentUser') as string);
+          this.orderService.uploadFile(formData).subscribe((response: FileProperties) => {
+            orderToSubmit.filepath = response.path;
+            console.log(response.path)
+          }, (error) => {
+            console.log("error occuredd");
+            console.log(error);
+            return;
+          });
+        }
         this.orderService.postOrder(username,orderToSubmit).subscribe((user) => {
           const dialogRef2 = this.dialog.open(OrderSuccessDialog);
           orderToSubmit.productOrders.forEach((productOrder) => {
             this.productService.decreaseStock(productOrder.product_id as number, parseInt(productOrder.amount)).subscribe();
-          })   
+          });
+          
           dialogRef2.afterClosed().subscribe(() => {
             this.cartService.clearCart();
             this.reloadCartItems();
@@ -205,6 +231,15 @@ export class CartComponent implements OnInit {
         return;
       }
     })
+  }
+
+  //help from https://blog.angular-university.io/angular-file-upload/
+  onFileSelected(event: any) {
+     this.file = event.target.files[0];
+     if(this.file){
+      this.fileName = this.file.name;
+     }
+
   }
 }
 

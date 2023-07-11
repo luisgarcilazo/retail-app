@@ -17,8 +17,9 @@ public class ProductOrder {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "product_id")
-    private Long product_id;
+    @ManyToOne()
+    @JoinColumn(name="product_id")
+    private Product product;
 
     @Column(name = "amount")
     private Long amount;

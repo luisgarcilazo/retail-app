@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Change price</h1>
+<div mat-dialog-content>
+    <p>What would you like to be its new price? <p>
+        <mat-form-field floatLabel="always" [style.width.px]=600>
+            <mat-label>Amount</mat-label>
+            <input matInput name="data.amount" [(ngModel)]="data.price" type="number" class="example-right-align" placeholder="0.00" step="0.01">
+            <span matTextPrefix>$&nbsp;</span>
+          </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="data.price" cdkFocusInitial>Ok</button>
+</div>

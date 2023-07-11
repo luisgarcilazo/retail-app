@@ -22,6 +22,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
 import { MatCard, MatCardModule } from '@angular/material/card';
 import { MatRippleModule } from '@angular/material/core';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 import { AddProductComponent } from './components/add-product/add-product.component';
 import { FruitsComponent } from './components/categories/fruits/fruits.component';
@@ -35,6 +36,7 @@ import { DisplayAllComponent } from './components/categories/display-all/display
 import { OrdersComponent } from './components/orders/orders.component';
 import { ManageOrdersComponent } from './components/manage-orders/manage-orders.component';
 import { ManageProductsComponent } from './components/manage-products/manage-products.component';
+import { CreateManagerComponent } from './components/create-manager/create-manager.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +60,8 @@ import { ManageProductsComponent } from './components/manage-products/manage-pro
     DisplayAllComponent,
     OrdersComponent,
     ManageOrdersComponent,
-    ManageProductsComponent
+    ManageProductsComponent,
+    CreateManagerComponent
   ],
   imports: [
     BrowserModule,
@@ -73,7 +76,8 @@ import { ManageProductsComponent } from './components/manage-products/manage-pro
     MatInputModule,
     MatIconModule,
     MatCardModule,
-    MatRippleModule
+    MatRippleModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]

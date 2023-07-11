@@ -21,6 +21,8 @@ import { OrdersComponent } from './components/orders/orders.component';
 import { ClientGuard } from './guard/client-guard';
 import { ManageOrdersComponent } from './components/manage-orders/manage-orders.component';
 import { ManageProductsComponent } from './components/manage-products/manage-products.component';
+import { CreateManagerComponent } from './components/create-manager/create-manager.component';
+import { DevGuard } from './guard/dev-guard';
 
 const routes: Routes = [
   {
@@ -82,6 +84,10 @@ const routes: Routes = [
   {
     path:'manage-products', component: ManageProductsComponent,
     canActivate: [ManagerGuard]
+  },
+  {
+    path:'create-manager', component:CreateManagerComponent,
+    canActivate: [DevGuard]
   }
 ];
 

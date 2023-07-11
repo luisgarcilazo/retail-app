@@ -11,5 +11,6 @@ export interface Order {
     status: string;
     totalcost: number;
     filename: string;
+    filepath: string;
     productOrders: ProductOrder[];
 }
