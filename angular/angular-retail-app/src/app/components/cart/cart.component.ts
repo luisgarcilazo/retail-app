@@ -176,7 +176,7 @@ export class CartComponent implements OnInit {
     const products: ProductOrder[] = [];
     this.cartItems.forEach((product: Product) => {
       let productToAdd: ProductOrder = {
-        product_id: product.id as number,
+        product: product,
         amount: product.amount as string
       };
       products.push(productToAdd);
@@ -214,7 +214,7 @@ export class CartComponent implements OnInit {
         this.orderService.postOrder(username,orderToSubmit).subscribe((user) => {
           const dialogRef2 = this.dialog.open(OrderSuccessDialog);
           orderToSubmit.productOrders.forEach((productOrder) => {
-            this.productService.decreaseStock(productOrder.product_id as number, parseInt(productOrder.amount)).subscribe();
+            this.productService.decreaseStock(productOrder.product.id as number, parseInt(productOrder.amount)).subscribe();
           });
           
           dialogRef2.afterClosed().subscribe(() => {
