@@ -29,13 +29,14 @@ export class AccDetailsService {
   addDev(user: User): Observable<User>{
     this.httpOptions.headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      // 'Authorization': localStorage.getItem('authKey') as string
+      'Authorization': localStorage.getItem('authKey') as string
     })
     return this.http.post<User>(this.devApi,user, this.httpOptions);
   }
   addManager(user: User): Observable<User>{
     this.httpOptions.headers = new HttpHeaders({
       'Content-Type': 'application/json',
+      'Authorization': localStorage.getItem('authKey') as string
     })
     return this.http.post<User>(this.managerApi,user, this.httpOptions);
   }

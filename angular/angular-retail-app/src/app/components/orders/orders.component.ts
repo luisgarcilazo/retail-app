@@ -34,4 +34,8 @@ export class OrdersComponent {
       currency: 'USD'
     });
   }
+  
+  parseInt(str: string){
+    return parseInt(str);
+  }
 }

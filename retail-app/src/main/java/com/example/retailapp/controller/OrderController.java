@@ -7,12 +7,18 @@ import org.apache.coyote.Response;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jackson.JsonObjectDeserializer;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -98,5 +104,28 @@ public class OrderController {
         response.put("path", userPath);
         response.put("fileName", modifiedFileName);
         return ResponseEntity.ok(response.toString());
+    }
+
+
+    //some help from https://stackoverflow.com/questions/5673260/downloading-a-file-from-spring-controllers
+    // https://www.tutorialspoint.com/spring_boot/spring_boot_file_handling.htm
+    // and https://www.baeldung.com/sprint-boot-multipart-requests
+    @GetMapping("/files/{user}/{filename}")
+    public ResponseEntity<Object> getFileByUser(@PathVariable("filename") String fileName,
+                                      @PathVariable("user") String user) throws IOException{
+        String fullPath = "./uploads/" + user + "/" + fileName;
+        System.out.println(fullPath);
+        File file = new File(fullPath);
+        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+        long fileLength = file.length();
+
+        HttpHeaders respHeader = new HttpHeaders();
+        respHeader.setContentType(MediaType.IMAGE_JPEG);
+        respHeader.setContentLength(fileLength);
+        respHeader.setContentDispositionFormData("attachment", fileName);
+
+        ResponseEntity<Object> responseEntity = ResponseEntity.ok().headers(respHeader)
+                        .contentLength(file.length()).contentType(MediaType.parseMediaType("image/jpeg")).body(resource);
+        return responseEntity;
     }
 }

@@ -20,7 +20,7 @@
     padding: 50px;
 }
 .item-container {
-    padding: 50px;
+    padding-bottom: 50px;
     font-family: 'consolas';
     font-size: 25px;
 }

@@ -82,7 +82,7 @@ public class ProductsController {
         }
     }
 
-    //update stock by id
+    //increase stock
     @PutMapping("/products/{id}/stock/increase/{amount}")
     public Product increaseStock(@PathVariable(name = "id") Long id,
                                @PathVariable(name = "amount") int amount){

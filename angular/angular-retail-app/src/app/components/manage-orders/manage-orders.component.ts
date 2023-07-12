@@ -21,8 +21,31 @@ export class ManageOrdersComponent {
     private orderService: OrderService,
     private dialog: MatDialog){}
 
+    amountPlaced: number = 0;
+    amountPending: number = 0;
+    amountCompleted: number = 0;
+    amountCancelled: number = 0;
+    totalOrders: number = 0;
+    
   reloadOrders(): boolean {
+    this.amountPlaced = 0;
+    this.amountPending = 0;
+    this.amountCompleted = 0;
+    this.amountCancelled = 0;
+    this.totalOrders = 0;
     this.orders = this.orderService.getAllOrders();
+    this.orders.forEach((order: Order) => {
+      if(order.status == 'Placed'){
+        this.amountPlaced++;
+      } else if (order.status == 'Completed'){
+        this.amountCompleted++;
+      } else if (order.status == 'Pending') {
+        this.amountPending++;
+      } else if (order.status == 'Cancelled'){
+        this.amountCancelled++;
+      }
+    })
+    this.totalOrders = this.amountCancelled + this.amountPending + this.amountCompleted + this.amountPlaced;
     if(this.orders.length == 0){
       return false;
     } else {
@@ -95,7 +118,7 @@ export class ManageOrdersComponent {
     const dialogRef = this.dialog.open(ConfirmLogoutDialog)
     dialogRef.afterClosed().subscribe((result) => {
       if(result == true){
-        this.orderService.changeStatus(order.id as number,"cancelled");
+        this.orderService.changeStatus(order.id as number,"Cancelled");
         const dialogRef2 = this.dialog.open(SuccessDialog);
         dialogRef2.afterClosed().subscribe((result) => {
           this.orderService.reloadAllOrders();
@@ -105,6 +128,9 @@ export class ManageOrdersComponent {
         return
       }
     })
+  }
+  parseInt(str: string) {
+    return parseInt(str);
   }
 }
 

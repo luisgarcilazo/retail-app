@@ -188,45 +188,62 @@ export class CartComponent implements OnInit {
       city: this.city,
       state: this.state,
       zipcode: this.zipcode,
-      status: "placed",
+      status: "Placed",
       totalcost: this.promoIncluded ? this.totalWithPromo : this.totalCost,
       filename: (this.addGift) ? this.fileName : "No gift was added",
-      filepath: '',
+      username: localStorage.getItem('currentUser') as string,
       productOrders: products
     }
     const dialogRef1 = this.dialog.open(OrderPlaceDialog)
     dialogRef1.afterClosed().subscribe((result) => {
       if(result == true){
         if(this.addGift == true){
-          orderToSubmit.filename == this.fileName;
           const formData = new FormData();
           formData.append('file', this.file);
           formData.append('user',localStorage.getItem('currentUser') as string);
           this.orderService.uploadFile(formData).subscribe((response: FileProperties) => {
-            orderToSubmit.filepath = response.path;
+            orderToSubmit.filename = response.fileName;
             console.log(response.path)
-          }, (error) => {
-            console.log("error occuredd");
-            console.log(error);
-            return;
+            this.orderService.postOrder(username,orderToSubmit).subscribe((user) => {
+              const dialogRef2 = this.dialog.open(OrderSuccessDialog);
+              orderToSubmit.productOrders.forEach((productOrder) => {
+                this.productService.decreaseStock(productOrder.product.id as number, parseInt(productOrder.amount)).subscribe();
+              });
+              
+              dialogRef2.afterClosed().subscribe(() => {
+                this.cartService.clearCart();
+                this.reloadCartItems();
+                this.displayCheckout = false;
+                let username = localStorage.getItem("currentUser") as string;
+                this.orderService.reloadOrdersFromUser(username);
+                if(this.authService.isAuthenticatedManager()){
+                  this.orderService.reloadAllOrders();
+                }
+                this.router.navigate(['/orders'])
+              })
+    
+            })
           });
-        }
-        this.orderService.postOrder(username,orderToSubmit).subscribe((user) => {
-          const dialogRef2 = this.dialog.open(OrderSuccessDialog);
-          orderToSubmit.productOrders.forEach((productOrder) => {
-            this.productService.decreaseStock(productOrder.product.id as number, parseInt(productOrder.amount)).subscribe();
-          });
-          
-          dialogRef2.afterClosed().subscribe(() => {
-            this.cartService.clearCart();
-            this.reloadCartItems();
-            this.displayCheckout = false;
-            let username = localStorage.getItem("currentUser") as string;
-            this.orderService.reloadOrdersFromUser(username);
-            this.router.navigate(['/orders'])
-          })
+        } else {
+          this.orderService.postOrder(username,orderToSubmit).subscribe((user) => {
+            const dialogRef2 = this.dialog.open(OrderSuccessDialog);
+            orderToSubmit.productOrders.forEach((productOrder) => {
+              this.productService.decreaseStock(productOrder.product.id as number, parseInt(productOrder.amount)).subscribe();
+            });
+            
+            dialogRef2.afterClosed().subscribe(() => {
+              this.cartService.clearCart();
+              this.reloadCartItems();
+              this.displayCheckout = false;
+              let username = localStorage.getItem("currentUser") as string;
+              this.orderService.reloadOrdersFromUser(username);
+              this.orderService.reloadAllOrders();
+              this.router.navigate(['/orders'])
+            })
 
-        })
+          })
+        }
+
       } else {
         return;
       }

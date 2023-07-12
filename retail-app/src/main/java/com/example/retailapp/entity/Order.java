@@ -47,8 +47,8 @@ public class Order {
     @Column(name = "filename")
     private String filename;
 
-    @Column(name = "filepath")
-    private String filepath;
+    @Column(name = "username")
+    private String username;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "order_product_orders",

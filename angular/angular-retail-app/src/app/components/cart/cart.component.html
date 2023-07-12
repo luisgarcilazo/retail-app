@@ -3,7 +3,7 @@
     <section class="min-vh-100">
         <div class="container-fluid cart-container">
             <div class="row">
-                <div class="col-lg-9">
+                <div class="col-lg-8">
                     <div class="d-flex flex-column left-col">
                         <div class="d-flex flex-column items">
                             <h1 style="font-size: 30px;">Cart Details</h1>
@@ -90,10 +90,10 @@
                                         </mat-form-field></td>
                                         </tr></table>
                                         <mat-checkbox class="example-margin" [(ngModel)]="addGift" name="addGift">Add gift message</mat-checkbox>
-                                        <!-- help from here https://blog.angular-university.io/angular-file-upload/ -->
+                                        <!-- help from here https://blog.angular-university.io/angular-file-upload/  and https://stackoverflow.com/questions/4212861/what-is-a-correct-mime-type-for-docx-pptx-etc -->
                                         <div *ngIf="addGift">
                                             <input type="file" class="file-input"
-                                            (change)="onFileSelected($event)" #fileUpload>
+                                            (change)="onFileSelected($event)" accept="image/jpeg, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, image/x-citrix-jpeg" #fileUpload>
                                             <div class="file-upload">
 
                                                 {{fileName || "No file uploaded yet."}}
@@ -118,7 +118,7 @@
 
                     
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <div class="d-flex flex-column order">
                         <h1 style="text-align: center; font-size: 30px;">Order Cost</h1>
                         <hr>
@@ -201,15 +201,19 @@
                             </div>
                             
                             <div class="col-lg-6" style="margin:25px;">
-                                <div class="d-flex gap-5">
-                                    <mat-form-field style="height: auto;">
-                                        <mat-label>Promo Code</mat-label>
-                                        <input matInput type="text" [(ngModel)]="promoCode">
-                                        <button *ngIf="promoCode" matSuffix mat-icon-button aria-label="Clear" (click)="promoCode=''">
-                                            <mat-icon>close</mat-icon>
-                                        </button>
-                                    </mat-form-field>
-                                    <button mat-raised-button style="background-color: lightpink; color: black; height:60px;" (click)="applyDiscount()">Apply</button>
+                                <div class="container-fluid px-0 mx-0">
+                                    <div class="row">
+                                        <div class="col-sm-10">
+                                            <mat-form-field style="height: auto; width: 100%;">
+                                                <mat-label>Promo Code</mat-label>
+                                                <input matInput type="text" [(ngModel)]="promoCode" >
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button mat-raised-button style="background-color: lightpink; color: black; height:60px;" (click)="applyDiscount()">Apply</button>
+                                        </div>
+                                    </div>
+
                                 </div>
 
                             </div>

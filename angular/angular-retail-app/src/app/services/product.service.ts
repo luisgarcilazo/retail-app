@@ -17,7 +17,8 @@ export class ProductService {
 
   addProduct(product: Product): Observable<Product>{
     this.httpOptions.headers = new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': localStorage.getItem('authKey') as string
     })
     return this.http.post<Product>(this.productsApi,product,this.httpOptions);
   }
@@ -39,7 +40,8 @@ export class ProductService {
 
   increaseStock(id: number, amount: number): Observable<Product>{
     this.httpOptions.headers = new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': localStorage.getItem('authKey') as string
     })
     const url = `${this.productsApi}/${id}/stock/increase/${amount}`;
     return this.http.put<Product>(url,this.httpOptions);
@@ -47,7 +49,8 @@ export class ProductService {
 
   changeName(id: number, name: string): Observable<Product>{
     this.httpOptions.headers = new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': localStorage.getItem('authKey') as string
     })
     const url = `${this.productsApi}/${id}/name/${name}`;
     return this.http.put<Product>(url,this.httpOptions);
@@ -55,7 +58,8 @@ export class ProductService {
 
   changeCategory(id: number, category: string): Observable<Product>{
     this.httpOptions.headers = new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': localStorage.getItem('authKey') as string
     })
     const url = `${this.productsApi}/${id}/category/${category}`;
     return this.http.put<Product>(url,this.httpOptions);
@@ -63,7 +67,8 @@ export class ProductService {
 
   changePrice(id: number, price: number): Observable<Product>{
     this.httpOptions.headers = new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': localStorage.getItem('authKey') as string
     })
     const url = `${this.productsApi}/${id}/price/${price}`;
     return this.http.put<Product>(url,this.httpOptions);

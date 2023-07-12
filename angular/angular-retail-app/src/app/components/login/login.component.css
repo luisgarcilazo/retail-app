@@ -12,3 +12,17 @@
       border-bottom-left-radius: 0.5rem;
     }
   }
+
+.form-container {
+    margin-top: 150px;
+    background-color: rgb(77, 77, 77);
+    border-style: solid;
+    border-color: black;
+    border-radius: 5%;
+    color: white;
+    padding:50px;
+}
+
+.side-col {
+
+}
