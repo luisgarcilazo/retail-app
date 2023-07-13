@@ -50,9 +50,10 @@ public class ProductsController {
 
         return dbProduct;
     }
+
     //delete for /products/{id} based on Id
     @DeleteMapping("/products/{id}")
-    public List<Product> deleteUser(@PathVariable Long id){
+    public List<Product> deleteProduct(@PathVariable Long id){
         try {
             Product product = this.productService.findById(id);
             this.productService.deleteProductById(id);
@@ -64,7 +65,7 @@ public class ProductsController {
     }
 
 
-    //update stock by id
+    //PUT: update stock by id
     @PutMapping("/products/{id}/stock/decrease/{amount}")
     public Product decreaseStock(@PathVariable(name = "id") Long id,
                                @PathVariable(name = "amount") int amount){
@@ -82,7 +83,7 @@ public class ProductsController {
         }
     }
 
-    //increase stock
+    //PUT: increase stock for id by amount
     @PutMapping("/products/{id}/stock/increase/{amount}")
     public Product increaseStock(@PathVariable(name = "id") Long id,
                                @PathVariable(name = "amount") int amount){
@@ -96,7 +97,7 @@ public class ProductsController {
         }
     }
 
-    //update name of product
+    //PUT: update name of product by id and name
     @PutMapping("/products/{id}/name/{name}")
     public Product updateName(@PathVariable(name = "id") Long id,
                                @PathVariable(name = "name") String name){
@@ -110,7 +111,7 @@ public class ProductsController {
         }
     }
 
-    //update price by id
+    //PUT: update price by id and amount
     @PutMapping("/products/{id}/price/{amount}")
     public Product updatePrice(@PathVariable(name = "id") Long id,
                                  @PathVariable(name = "amount") double amount){
@@ -124,7 +125,7 @@ public class ProductsController {
         }
     }
 
-    //update category of product
+    //PUT: update category of product by id and category
     @PutMapping("/products/{id}/category/{category}")
     public Product updateCategory(@PathVariable(name = "id") Long id,
                                @PathVariable(name = "category") String category){

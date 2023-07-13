@@ -13,6 +13,7 @@ import { StoreFrontComponent } from './components/store-front/store-front.compon
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FileSaverModule } from 'ngx-filesaver';
 
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button'
@@ -77,7 +78,8 @@ import { CreateManagerComponent } from './components/create-manager/create-manag
     MatIconModule,
     MatCardModule,
     MatRippleModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    FileSaverModule
   ],
   providers: [],
   bootstrap: [AppComponent]

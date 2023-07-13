@@ -23,6 +23,8 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    //code was gotten from tutorials in https://www.udemy.com/course/spring-hibernate-tutorial
+    //used for authenticating the user from a class that inherits UserDetailsService
     @Bean
     public DaoAuthenticationProvider authenticationProvider(UserInfoService userInfoService) {
         DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
@@ -30,6 +32,8 @@ public class SecurityConfig {
         auth.setPasswordEncoder(passwordEncoder()); //set password encoder
         return auth;
     }
+    //filter chain used for securing the endpoints depending on role
+    //not all of them may have been used
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(Customizer.withDefaults()).authorizeHttpRequests(configurer ->
@@ -77,6 +81,8 @@ public class SecurityConfig {
     // and
     // https://www.youtube.com/watch?v=HRwlT_etr60
     //were used for help
+    //configures CORS for allowing communication between the API and localhost:4200 (Angular APP)
+    //Allows for GET, POST, DELETE, and Put
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

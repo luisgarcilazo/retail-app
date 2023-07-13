@@ -17,29 +17,22 @@ public class ProductServiceImpl implements ProductService{
     @Autowired
     private ProductDAO productDAO;
 
+    //returns list of all product
     @Override
     public List<Product> getAllProducts() {
         log.info("Getting all products");
         return this.productDAO.findAll();
     }
 
+    //saves a product into the database, returns that product
     @Override
     public Product saveProduct(Product product) {
         log.info("Saving a product for product name: " + product.getName());
         return this.productDAO.save(product);
     }
 
-//    @Override
-//    public Product updateStockById(Long id) {
-//        try{
-//            Product product = findById(id);
-//
-//        } catch (RuntimeException e){
-//            log.error("Couldn't find product so can't update stock for id: " + id);
-//            return new Product();
-//        }
-//    }
 
+    //finds the product by id and returns it, throws exception if not found
     @Override
     public Product findById(Long id) {
         log.info("Inside find by id on service");
@@ -53,12 +46,15 @@ public class ProductServiceImpl implements ProductService{
         }
     }
 
+    //deletes product depending on the id provided
     @Override
     public void deleteProductById(Long id) {
         log.info("Deleting a product for id: " + id);
         this.productDAO.deleteById(id);
     }
 
+    //decreases the stock for the product passed by the amount specified, returns same product
+    //will fail if amount > stock as stock cannot be less than 0
     @Override
     public Product decreaseStock(Product product, int amount){
         log.info("Decreasing stock about to be called");
@@ -70,6 +66,7 @@ public class ProductServiceImpl implements ProductService{
         return this.productDAO.save(product);
     }
 
+    //increases stock by the amount provided for the product
     @Override
     public Product increaseStock(Product product, int amount){
         log.info("Increasing stock called");
@@ -77,6 +74,7 @@ public class ProductServiceImpl implements ProductService{
         return this.productDAO.save(product);
     }
 
+    //updates the name on the product provided and saves it to the database using the DAO
     @Override
     public Product updateName(Product product, String name) {
         log.info("Update name called");
@@ -84,6 +82,7 @@ public class ProductServiceImpl implements ProductService{
         return this.productDAO.save(product);
     }
 
+    //updates the price on the product provided and saves it to the database using the DAO
     @Override
     public Product updatePrice(Product product, double price) {
         log.info("Update price called");
@@ -91,6 +90,7 @@ public class ProductServiceImpl implements ProductService{
         return this.productDAO.save(product);
     }
 
+    //updates the category on the product provided and saves it to the database using the DAO-
     @Override
     public Product updateCategory(Product product, String category) {
         log.info("Update category called");

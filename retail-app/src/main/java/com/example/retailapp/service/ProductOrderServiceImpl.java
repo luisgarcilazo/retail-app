@@ -13,6 +13,8 @@ public class ProductOrderServiceImpl implements ProductOrderService{
 
     @Autowired
     private ProductOrderDAO productOrderDAO;
+
+    //method for saving a product order into the database (not really used)
     @Override
     public ProductOrder save(ProductOrder productOrder) {
         return this.productOrderDAO.save(productOrder);

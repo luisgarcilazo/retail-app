@@ -62,6 +62,7 @@
                                             <p>{{order.zipcode}}</p>
                                         </div>
                                     </div>
+
                                     <div class="row buttons">
                                         <div class="col-sm-2">
                                             <h1>Change status: </h1>
@@ -77,6 +78,15 @@
                                         </div>
                                         <div class="col-sm-2">
                                             <button mat-flat-button style="background-color: indianred; color: black" (click)="cancelOrder(order)">Cancelled</button>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="containsFile(order)" class="row file-download">
+                                        <div class="col-sm-11">
+                                            <h1>Contains gift message: {{order.filename}}</h1>
+
+                                        </div>      
+                                        <div class="col-sm-1">
+                                            <button mat-flat-button style="background-color: rgb(92, 205, 199); color: black" (click)="downloadFile(order)">Download</button>
                                         </div>
                                     </div>
                                 </div>

@@ -3,6 +3,7 @@ package com.example.retailapp.controller;
 import com.example.retailapp.entity.Order;
 import com.example.retailapp.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.coyote.Response;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ public class OrderController {
         return dbOrder;
     }
 
-    // PUT method for updating status
+    // PUT method for updating order status to order found by id
 
     @PutMapping("/{id}/{status}")
     public Order updateStatus(@PathVariable(name = "id") Long id,
@@ -69,6 +70,10 @@ public class OrderController {
             return new Order();
         }
     }
+
+
+    //POST /files saves a file for a user to the database
+
     //some help from https://www.youtube.com/watch?v=Qh3g1JD9JiM ,
     //https://stackoverflow.com/questions/44839753/returning-json-object-as-response-in-spring-boot
     // and
@@ -89,7 +94,9 @@ public class OrderController {
         } catch (IOException e){
             log.error("User directory was not able to be initialized, may already exist");
         }
+        //file name is modified to be unique
         String modifiedFileName = System.currentTimeMillis()+"_"+file.getOriginalFilename();
+        modifiedFileName = modifiedFileName.replaceAll(" ", "_");
         try {
             Files.copy(file.getInputStream(), userPath.resolve(modifiedFileName));
         } catch (Exception e){
@@ -110,22 +117,36 @@ public class OrderController {
     //some help from https://stackoverflow.com/questions/5673260/downloading-a-file-from-spring-controllers
     // https://www.tutorialspoint.com/spring_boot/spring_boot_file_handling.htm
     // and https://www.baeldung.com/sprint-boot-multipart-requests
+    //returns the file based on user and filename
     @GetMapping("/files/{user}/{filename}")
     public ResponseEntity<Object> getFileByUser(@PathVariable("filename") String fileName,
                                       @PathVariable("user") String user) throws IOException{
+        log.info("Get jpeg file by user called");
         String fullPath = "./uploads/" + user + "/" + fileName;
-        System.out.println(fullPath);
+        log.info("File tried to be accessed is at path: " + fullPath);
         File file = new File(fullPath);
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
         long fileLength = file.length();
-
+        String filetype = "";
+        if(FilenameUtils.getExtension(fileName).equals("doc")){
+            filetype = "application/msword";
+        } else if (FilenameUtils.getExtension(fileName).equals("jpeg") || FilenameUtils.getExtension(fileName).equals("jpg")){
+            filetype = "image/jpeg";
+        } else if (FilenameUtils.getExtension(fileName).equals("docx")){
+            filetype = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        } else {
+            log.error("Incorrect file-type, can only be doc, docx, or jpg/jpeg");
+            return ResponseEntity.internalServerError().body("Error with getting a file of the type provided.");
+        }
+        log.info("File type is : " + filetype);
         HttpHeaders respHeader = new HttpHeaders();
-        respHeader.setContentType(MediaType.IMAGE_JPEG);
+        respHeader.setContentType(MediaType.parseMediaType(filetype));
         respHeader.setContentLength(fileLength);
         respHeader.setContentDispositionFormData("attachment", fileName);
 
         ResponseEntity<Object> responseEntity = ResponseEntity.ok().headers(respHeader)
-                        .contentLength(file.length()).contentType(MediaType.parseMediaType("image/jpeg")).body(resource);
+                        .contentLength(file.length()).contentType(MediaType.parseMediaType(filetype)).body(resource);
         return responseEntity;
     }
+
 }

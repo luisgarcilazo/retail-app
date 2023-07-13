@@ -163,7 +163,7 @@ export class CartComponent implements OnInit {
     return this.displayCheckout;
   }
 
-
+  //submit an order request to the API and act accordingly
   async submitOrder(){
     if(this.firstname == null || this.lastname == null || this.address == null || this.city == null || this.state == null || this.zipcode == null){
       console.log("hello");
@@ -181,6 +181,7 @@ export class CartComponent implements OnInit {
       };
       products.push(productToAdd);
     })
+    //prepare order
     let orderToSubmit: Order = {
       firstname: this.firstname,
       lastname: this.lastname,
@@ -198,6 +199,10 @@ export class CartComponent implements OnInit {
     dialogRef1.afterClosed().subscribe((result) => {
       if(result == true){
         if(this.addGift == true){
+          if(this.file.type != 'application/msword' && this.file.type != 'image/jpeg' && this.file.type != 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'){
+            const dialogRef2 = this.dialog.open(IncorrectFileTypeDialog);
+            return;
+          }
           const formData = new FormData();
           formData.append('file', this.file);
           formData.append('user',localStorage.getItem('currentUser') as string);
@@ -302,4 +307,12 @@ export class OrderSuccessDialog {}
 })
 export class NoItemsDialog {}
 
+
+@Component({
+  selector: 'incorrect-file-type-dialog',
+  templateUrl: 'incorrect-file-type-dialog.html',
+  standalone: true,
+  imports: [MatDialogModule, MatButtonModule],
+})
+export class IncorrectFileTypeDialog {}
 

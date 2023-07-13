@@ -7,6 +7,8 @@ import { OrderService } from 'src/app/services/order.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { FileSaverService } from 'ngx-filesaver';
+
 @Component({
   selector: 'app-manage-orders',
   templateUrl: './manage-orders.component.html',
@@ -19,7 +21,8 @@ export class ManageOrdersComponent {
     private cartService: CartService,
     private authService: AuthService,
     private orderService: OrderService,
-    private dialog: MatDialog){}
+    private dialog: MatDialog,
+    private fileService: FileSaverService){}
 
     amountPlaced: number = 0;
     amountPending: number = 0;
@@ -66,7 +69,7 @@ export class ManageOrdersComponent {
   }
 
   setAsCompleted(order: Order){
-    const dialogRef = this.dialog.open(ConfirmLogoutDialog)
+    const dialogRef = this.dialog.open(ConfirmChangeStatus)
     dialogRef.afterClosed().subscribe((result) => {
       if(result == true){
         this.orderService.changeStatus(order.id as number,"Completed");
@@ -82,7 +85,7 @@ export class ManageOrdersComponent {
   }
 
   setAsPending(order: Order){
-    const dialogRef = this.dialog.open(ConfirmLogoutDialog)
+    const dialogRef = this.dialog.open(ConfirmChangeStatus)
     dialogRef.afterClosed().subscribe((result) => {
       if(result == true){
         this.orderService.changeStatus(order.id as number,"Pending");
@@ -98,7 +101,7 @@ export class ManageOrdersComponent {
   }
 
   setAsPlaced(order: Order){
-    const dialogRef = this.dialog.open(ConfirmLogoutDialog)
+    const dialogRef = this.dialog.open(ConfirmChangeStatus)
     dialogRef.afterClosed().subscribe((result) => {
       if(result == true){
         this.orderService.changeStatus(order.id as number,"Placed");
@@ -115,7 +118,7 @@ export class ManageOrdersComponent {
 
   
   cancelOrder(order: Order){
-    const dialogRef = this.dialog.open(ConfirmLogoutDialog)
+    const dialogRef = this.dialog.open(ConfirmChangeStatus)
     dialogRef.afterClosed().subscribe((result) => {
       if(result == true){
         this.orderService.changeStatus(order.id as number,"Cancelled");
@@ -132,7 +135,31 @@ export class ManageOrdersComponent {
   parseInt(str: string) {
     return parseInt(str);
   }
+  containsFile(order: Order): boolean {
+    if(order.filename == '' || order.filename == null || order.filename == 'No gift was added'){
+      return false
+    } else {
+      return true;
+    }
+  }
+  //help from here https://stackoverflow.com/questions/53246489/how-to-use-filesaver-in-angular-5-correctly
+  downloadFile(order: Order){
+      const dialogRef = this.dialog.open(DownloadConfirmDialog);
+      dialogRef.afterClosed().subscribe((result) => {
+        if(result == true){
+          this.orderService.getFile(order.username, order.filename).subscribe((response) => {
+            try{
+              this.fileService.save(response,order.filename)
+            } catch(e){
+              console.log(e);
+            }
+          });
+        }
+      })
+  }
 }
+
+
 
 @Component({
   selector: 'confirm-dialog',
@@ -140,7 +167,7 @@ export class ManageOrdersComponent {
   standalone: true,
   imports: [MatDialogModule, MatButtonModule],
 })
-export class ConfirmLogoutDialog {}
+export class ConfirmChangeStatus {}
 
 @Component({
   selector: 'success-dialog',
@@ -149,3 +176,11 @@ export class ConfirmLogoutDialog {}
   imports: [MatDialogModule, MatButtonModule],
 })
 export class SuccessDialog {}
+
+@Component({
+  selector: 'download-confirm-dialog',
+  templateUrl: 'download-confirm-dialog.html',
+  standalone: true,
+  imports: [MatDialogModule, MatButtonModule],
+})
+export class DownloadConfirmDialog {}

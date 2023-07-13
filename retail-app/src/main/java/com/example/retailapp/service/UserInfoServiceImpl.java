@@ -122,7 +122,9 @@ public class UserInfoServiceImpl implements UserInfoService{
         user.setOrders(orders);
         return this.userDAO.save(user);
     }
+
     //code was gotten from tutorials in https://www.udemy.com/course/spring-hibernate-tutorial
+    //loads a user by username, returns a UserDetails object that is used for authentication/validation
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = this.findByUsername(username);
@@ -136,6 +138,7 @@ public class UserInfoServiceImpl implements UserInfoService{
     }
 
     //code was gotten from tutorials in https://www.udemy.com/course/spring-hibernate-tutorial
+    //maps a collection of roles to a list of authorities, used for authentication/validation
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }

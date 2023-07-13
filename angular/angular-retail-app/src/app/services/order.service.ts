@@ -80,5 +80,17 @@ export class OrderService {
     const url = `${this.ordersApi}/files`;
     return this.httpClient.post<FileProperties>(url, formData,this.httpOptions);
   }
+
+  //help from here https://stackoverflow.com/questions/35138424/how-do-i-download-a-file-with-angular2-or-greater, https://stackoverflow.com/questions/50798592/angular-6-how-to-set-response-type-as-text-while-making-http-call
+  //and
+  //https://nils-mehlhorn.de/posts/angular-file-download-progress/
+  getFile(username: string, filename: string): Observable<Blob>{
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': localStorage.getItem('authKey') as string
+    })
+    const url = `${this.ordersApi}/files/${username}/${filename}`;
+    return this.httpClient.get(url,{ headers , responseType: 'blob'});
+  }
   
 }

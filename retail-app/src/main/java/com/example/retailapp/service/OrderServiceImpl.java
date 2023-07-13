@@ -22,6 +22,7 @@ public class OrderServiceImpl implements OrderService {
         return this.orderDAO.findAll();
     }
 
+    //saves an order to the database using the DAO
     @Override
     public Order save(Order order) {
         log.info("Saving a order");
@@ -29,6 +30,7 @@ public class OrderServiceImpl implements OrderService {
         return this.orderDAO.save(order);
     }
 
+    //finds an order by id, throws exception if id not found
     @Override
     public Order findById(Long id) {
         Optional<Order> optionalOrder = this.orderDAO.findById(id);
@@ -41,6 +43,7 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    //updates the status stored in the database using the DAO, only called when order has been found by id
     @Override
     public Order updateStatus(Order order, String status) {
         log.info("Updating order with id " + order.getId() +  " to have status: " + status);

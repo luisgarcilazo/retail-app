@@ -84,6 +84,8 @@ public class UserDetailsController {
 
 
     }
+
+    //DELETE /users/{username} deletes a user by username
     @DeleteMapping("/users/{username}")
     public List<User> deleteUser(@PathVariable String username){
         try {
