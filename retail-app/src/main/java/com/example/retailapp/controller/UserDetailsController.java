@@ -31,13 +31,14 @@ public class UserDetailsController {
     // GET /users endpoint for getting all users
     @GetMapping("/users")
     public List<User> findAll() {
+        log.info("Getting all users call to API");
         return userInfoService.findAll();
     }
 
     // POST /users/client for adding a new client
     @PostMapping("/users/client")
     public User addClient(@RequestBody User user) {
-
+        log.info("Adding client with data: " + user);
         User dbUser = userInfoService.saveClient(user);
 
         return dbUser;
@@ -46,7 +47,7 @@ public class UserDetailsController {
     // POST /users/client for adding a new dev
     @PostMapping("/users/dev")
     public User addDev(@RequestBody User user) {
-
+        log.info("Adding dev with data: " + user);
         User dbUser = userInfoService.saveDev(user);
 
         return dbUser;
@@ -55,7 +56,7 @@ public class UserDetailsController {
     // POST /users/manager for adding a new manager
     @PostMapping("/users/manager")
     public User addManager(@RequestBody User user) {
-
+        log.info("Adding manager with data: " + user);
         User dbUser = userInfoService.saveManager(user);
 
         return dbUser;
@@ -88,6 +89,7 @@ public class UserDetailsController {
     //DELETE /users/{username} deletes a user by username
     @DeleteMapping("/users/{username}")
     public List<User> deleteUser(@PathVariable String username){
+        log.info("Delete api call of user with username: " + username);
         try {
             User user = this.userInfoService.findByUsername(username);
             this.userInfoService.deleteUserByUsername(username);

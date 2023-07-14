@@ -19,6 +19,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getAllOrders() {
+        log.info("Inside getAllOrders of service");
         return this.orderDAO.findAll();
     }
 
@@ -33,6 +34,7 @@ public class OrderServiceImpl implements OrderService {
     //finds an order by id, throws exception if id not found
     @Override
     public Order findById(Long id) {
+        log.info("Inside findById of Service for id: " + id);
         Optional<Order> optionalOrder = this.orderDAO.findById(id);
         Order order = null;
         if(optionalOrder.isPresent()){
