@@ -4,6 +4,7 @@ import { Order } from '../entities/Order';
 import { Observable } from 'rxjs';
 import { User } from '../entities/User';
 import { FileProperties } from '../entities/FileProperties';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -29,6 +30,7 @@ export class OrderService {
       'Content-Type': 'application/json',
       'Authorization': localStorage.getItem('authKey') as string
     })
+    console.log(this.httpOptions.headers);
     const url = `${this.usersApi}/${username}/orders`;
     return this.httpClient.put<User>(url,order,this.httpOptions);
   }
@@ -62,13 +64,15 @@ export class OrderService {
   }
 
   changeStatus(id: number, status: string){
-    this.httpOptions.headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': localStorage.getItem('authKey') as string
-    })
+    const httpOptions2 = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('authKey') as string
+      }),
+    }
     const url = `${this.ordersApi}/${id}/${status}`;
     console.log(url);
-    this.httpClient.put<Order>(url,this.httpOptions).subscribe();
+    this.httpClient.put<Order>(url,"",httpOptions2).subscribe();
   }
 
   //help from https://stackoverflow.com/questions/42013087/multipartexception-current-request-is-not-a-multipart-request

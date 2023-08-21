@@ -1,3 +1,30 @@
 .home-section{
     height: 85vh;
 }
+
+.hot-deals{
+    color: red;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 100px;
+    text-shadow: 0 0 50px orange;
+}
+
+.retail-title {
+    color: white;
+    font-size: 45px;
+    text-shadow: 0 0 25px #C2185B;
+    margin-bottom: 20px;
+}
+.site-launch {
+    margin-top: 90px;
+    color: pink;
+    font-size: 75px;
+    text-shadow: 0 0 25px pink;
+}
+.promo-text{
+    margin-top: 90px;
+    color: white;
+    text-shadow: 0 0 25px white;
+}
+

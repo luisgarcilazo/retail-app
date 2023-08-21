@@ -7,6 +7,7 @@ import {MatDialog, MAT_DIALOG_DATA, MatDialogRef, MatDialogModule} from '@angula
 import {MatButtonModule} from '@angular/material/button';
 import { Product } from 'src/app/entities/Product';
 import { ProductService } from 'src/app/services/product.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-add-product',
   templateUrl: './add-product.component.html',
@@ -19,7 +20,8 @@ export class AddProductComponent {
   stock!: number;
   product!: Product;
 
-  constructor(private dialog: MatDialog,
+  constructor(private router: Router,
+              private dialog: MatDialog,
               private productService: ProductService){};
 
   addProduct(): void {
@@ -45,7 +47,9 @@ export class AddProductComponent {
         this.productService.addProduct(newProduct).subscribe((product) => {
           this.product = product;
           const dialogRef2 = this.dialog.open(SuccessProductDialog);
-          return;
+          dialogRef2.afterClosed().subscribe((result) => {
+            this.router.navigate(['/manage-products'])
+          })
         })
       }
     })

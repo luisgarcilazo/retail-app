@@ -3,10 +3,14 @@
     padding-top: 15px;
 }
 
-li{
+ul{
     display: flex;
     flex-wrap: wrap;
     list-style-type: none;
+}
+
+li {
+    margin: 15px;
 }
 
 .title {

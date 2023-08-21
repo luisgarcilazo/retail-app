@@ -7,12 +7,14 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ProductService {
-  private productsApi = 'http://localhost:8081/store/products'
+  private productsApi = 'http://localhost:8081/store/products';
+
   private httpOptions  = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
     }),
   };
+
   constructor(private http:HttpClient) { }
 
   addProduct(product: Product): Observable<Product>{
@@ -35,7 +37,7 @@ export class ProductService {
       'Content-Type': 'application/json'
     })
     const url = `${this.productsApi}/${id}/stock/decrease/${amount}`;
-    return this.http.put<Product>(url,this.httpOptions);
+    return this.http.put<Product>(url,"",this.httpOptions);
   }
 
   increaseStock(id: number, amount: number): Observable<Product>{
@@ -44,7 +46,7 @@ export class ProductService {
       'Authorization': localStorage.getItem('authKey') as string
     })
     const url = `${this.productsApi}/${id}/stock/increase/${amount}`;
-    return this.http.put<Product>(url,this.httpOptions);
+    return this.http.put<Product>(url,"",this.httpOptions);
   }
 
   changeName(id: number, name: string): Observable<Product>{
@@ -53,7 +55,7 @@ export class ProductService {
       'Authorization': localStorage.getItem('authKey') as string
     })
     const url = `${this.productsApi}/${id}/name/${name}`;
-    return this.http.put<Product>(url,this.httpOptions);
+    return this.http.put<Product>(url,"",this.httpOptions);
   }
 
   changeCategory(id: number, category: string): Observable<Product>{
@@ -62,7 +64,7 @@ export class ProductService {
       'Authorization': localStorage.getItem('authKey') as string
     })
     const url = `${this.productsApi}/${id}/category/${category}`;
-    return this.http.put<Product>(url,this.httpOptions);
+    return this.http.put<Product>(url,"",this.httpOptions);
   }
 
   changePrice(id: number, price: number): Observable<Product>{
@@ -71,6 +73,6 @@ export class ProductService {
       'Authorization': localStorage.getItem('authKey') as string
     })
     const url = `${this.productsApi}/${id}/price/${price}`;
-    return this.http.put<Product>(url,this.httpOptions);
+    return this.http.put<Product>(url,"",this.httpOptions);
   }
 }

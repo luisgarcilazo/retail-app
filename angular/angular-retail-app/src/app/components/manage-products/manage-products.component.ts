@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef, MatDialogModule} from '@angular/material/dialog'
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule, NgFor } from '@angular/common';
+import { Router } from '@angular/router';
 
 export interface StockDialogData {
   stockOptionLimit: number[];
@@ -50,7 +51,8 @@ export class ManageProductsComponent {
   newCategory!: string;
   newPrice!: number;
 
-  constructor(private productService: ProductService,
+  constructor(private router: Router,
+              private productService: ProductService,
               private cartService: CartService,
               private dialog: MatDialog){}
 
@@ -75,7 +77,7 @@ export class ManageProductsComponent {
     });
   }
 
-  addStock(product: Product): void {
+  async addStock(product: Product){
     const dialogRef = this.dialog.open(AddStockDialog, {
       data: {stockOptionLimit:this.stockOptionLimit, amount: this.amount},
     });
@@ -98,7 +100,7 @@ export class ManageProductsComponent {
     })
   }
 
-  removeStock(product: Product): void {
+  async removeStock(product: Product) {
     let removeStockOptionLimit: number[] = [];
     for(let i = 1; i <= product.stock; i++){
       removeStockOptionLimit.push(i);
@@ -125,7 +127,7 @@ export class ManageProductsComponent {
     })
   }
 
-  updateName(product: Product){
+  async updateName(product: Product){
     const dialogRef = this.dialog.open(UpdateNameDialog, {
       data: {name: this.newName},
     });
@@ -148,7 +150,7 @@ export class ManageProductsComponent {
     })
   }
 
-  updateCategory(product: Product){
+  async updateCategory(product: Product){
     const dialogRef = this.dialog.open(UpdateCategoryDialog, {
       data: {category: this.newCategory},
     });
@@ -171,7 +173,7 @@ export class ManageProductsComponent {
     })
   }
 
-  updatePrice(product: Product){
+  async updatePrice(product: Product){
     const dialogRef = this.dialog.open(UpdatePriceDialog, {
       data: {price: this.newPrice},
     });
@@ -192,6 +194,10 @@ export class ManageProductsComponent {
         return;
       }
     })
+  }
+
+  goToAddProduct() {
+    this.router.navigate(['/add-product'])
   }
   }
 

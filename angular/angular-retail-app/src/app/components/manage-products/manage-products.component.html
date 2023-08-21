@@ -2,8 +2,8 @@
     <app-home-nav></app-home-nav>
     <section class="">
         <div class="container-fluid p-5 min-vh-100">
-            <li>
-                <ul *ngFor="let product of products">
+            <ul>
+                <li *ngFor="let product of products">
 
                     <!-- help from card with multiple sections https://material.angular.io/components/card/examples -->
                     <mat-card class="example-card">
@@ -41,8 +41,15 @@
                             </div>
                         </mat-card-content>
                       </mat-card>
-                </ul>
-            </li>>
+                    </li>
+                    <li>
+                        <div class="example-ripple-container mat-elevation-z4"
+                        matRipple (click)="goToAddProduct()">
+                        <p>+</p>
+                        </div>
+                    </li>
+
+            </ul>
         </div>
     </section>
     <app-footer></app-footer>

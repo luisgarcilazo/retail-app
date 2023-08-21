@@ -50,6 +50,9 @@ export class CreateAccountComponent {
         this.accDetailsService.addClient(newClient).subscribe((user: User) => {
           this.userCreated = user;
           const dialogRef2 = this.dialog.open(CreateSuccessDialog);
+          dialogRef2.afterClosed().subscribe((result) => {
+            this.router.navigate(['/login']);
+          })
         })
       }
     })

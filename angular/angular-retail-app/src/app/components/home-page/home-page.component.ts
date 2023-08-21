@@ -16,4 +16,14 @@ export class HomePageComponent {
     isLoggedIn(): boolean {
       return this.authService.isAuthenticated();
     }
+
+    goToCreateAccount(): void {
+      this.router.navigate(['/create-account']);
+    }
+    goToStore(): void {
+      this.router.navigate(['/store']);
+    }
+    goToCart(): void {
+      this.router.navigate(['/cart']);
+    }
 }
